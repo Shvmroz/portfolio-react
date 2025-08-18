@@ -13,37 +13,30 @@ import {
 } from "@mui/material";
 import { Icon } from "@iconify/react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
 
 const drawerWidth = 280;
 
 const menuItems = [
   {
-    text: "Dashboard",
-    icon: <Icon icon="material-symbols:dashboard" />,
+    text: "About Me",
+    icon: <Icon icon="material-symbols:person" />,
     path: "/dashboard",
   },
   {
-    text: "Products",
-    icon: <Icon icon="material-symbols:inventory" />,
-    path: "/products",
+    text: "Projects",
+    icon: <Icon icon="material-symbols:code" />,
+    path: "/projects",
   },
   {
-    text: "Orders",
-    icon: <Icon icon="material-symbols:shopping-cart" />,
-    path: "/orders",
-  },
-  {
-    text: "Settings",
-    icon: <Icon icon="material-symbols:settings" />,
-    path: "/settings",
+    text: "CV & Resume",
+    icon: <Icon icon="material-symbols:description" />,
+    path: "/cv",
   },
 ];
 
 const Sidebar = ({ mobileOpen, handleDrawerToggle }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { user } = useAuth();
 
   const drawer = (
     <Box
@@ -56,24 +49,25 @@ const Sidebar = ({ mobileOpen, handleDrawerToggle }) => {
     >
       {/* Header */}
       <Box sx={{ p: 3, borderBottom: "1px solid #e0e0e0" }}>
-        {/* <Box sx={{ display: "flex", alignItems: "center", mb: 2  }}>
-          <Typography
-            variant="h5"
-            sx={{ fontWeight: 700, color: "primary.main" }}
-          >
-            Abaya Store
-          </Typography>
-        </Box> */}
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Avatar sx={{ width: 40, height: 40, mr: 2 }}>
-            <Icon icon="material-symbols:person" />
+          <Avatar 
+            sx={{ 
+              width: 60, 
+              height: 60, 
+              mr: 2,
+              background: 'linear-gradient(135deg, #EB5E28 0%, #C04410 100%)'
+            }}
+          >
+            <Typography variant="h4" sx={{ color: 'white', fontWeight: 'bold' }}>
+              S
+            </Typography>
           </Avatar>
           <Box>
-            <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
-              {user?.name}
+            <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+              Muhammad Shamroz Khan
             </Typography>
             <Typography variant="caption" sx={{ opacity: 0.8 }}>
-              Administrator
+              Full Stack Developer
             </Typography>
           </Box>
         </Box>
@@ -120,7 +114,7 @@ const Sidebar = ({ mobileOpen, handleDrawerToggle }) => {
       <Divider />
       <Box sx={{ p: 2 }}>
         <Typography variant="caption" color="text.secondary">
-          © 2024 Abaya Store Admin
+          © 2024 Muhammad Shamroz Khan
         </Typography>
       </Box>
     </Box>

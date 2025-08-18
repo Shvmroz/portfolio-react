@@ -5,48 +5,37 @@ import {
   CardContent,
   Typography,
   Box,
-  ToggleButton,
-  ToggleButtonGroup,
+  Avatar,
+  Chip,
   Paper,
+  Button,
+  TextField,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import { Icon } from "@iconify/react";
-import Chart from "react-apexcharts";
-import { salesData, chartData } from "../../../data/dummyData";
+import { useSnackbar } from "notistack";
 
-const StatCard = ({ title, value, growth, icon, color }) => (
-  <Card sx={{ backgroundColor: `${color}.soft` }}>
+const SkillCard = ({ title, icon, level, color, description }) => (
+  <Card sx={{ height: '100%', backgroundColor: `${color}.soft` }}>
     <CardContent>
       <Box
         sx={{
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
+          mb: 2,
         }}
       >
-        <Box>
-          <Typography color="textSecondary" gutterBottom variant="body2">
-            {title}
-          </Typography>
-          <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
-            {value}
-          </Typography>
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Icon
-              icon="material-symbols:trending-up"
-              style={{ fontSize: 16, color: "#4CAF50", marginRight: 4 }}
-            />
-            <Typography variant="caption" color="success.main">
-              +{growth}%
-            </Typography>
-          </Box>
-        </Box>
         <Box
           sx={{
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            width: 60,
-            height: 60,
+            width: 50,
+            height: 50,
             borderRadius: "50%",
             backgroundColor: `${color}.light`,
             color: `${color}.main`,
@@ -54,111 +43,92 @@ const StatCard = ({ title, value, growth, icon, color }) => (
         >
           {icon}
         </Box>
+        <Chip
+          label={level}
+          color={color}
+          size="small"
+          variant="outlined"
+        />
       </Box>
+      <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
+        {title}
+      </Typography>
+      <Typography variant="body2" color="text.secondary">
+        {description}
+      </Typography>
     </CardContent>
   </Card>
 );
 
 const Dashboard = () => {
-  const [period, setPeriod] = useState("daily");
+  const [editMode, setEditMode] = useState(false);
+  const [profileData, setProfileData] = useState({
+    name: "Muhammad Shamroz Khan",
+    title: "Full Stack Web Developer",
+    bio: "Passionate web developer with expertise in modern JavaScript frameworks and backend technologies. I love creating efficient, scalable, and user-friendly web applications.",
+    location: "Pakistan",
+    email: "shamrozkhan@example.com",
+    phone: "+92-XXX-XXXXXXX",
+    experience: "3+ Years",
+  });
 
-  const handlePeriodChange = (event, newPeriod) => {
-    if (newPeriod !== null) {
-      setPeriod(newPeriod);
-    }
+  const { enqueueSnackbar } = useSnackbar();
+
+  const skills = [
+    {
+      title: "React.js",
+      icon: <Icon icon="logos:react" width={24} height={24} />,
+      level: "Expert",
+      color: "info",
+      description: "Building dynamic UIs with hooks, context, and modern patterns"
+    },
+    {
+      title: "Next.js",
+      icon: <Icon icon="logos:nextjs-icon" width={24} height={24} />,
+      level: "Advanced",
+      color: "secondary",
+      description: "Server-side rendering, API routes, and full-stack applications"
+    },
+    {
+      title: "Node.js",
+      icon: <Icon icon="logos:nodejs-icon" width={24} height={24} />,
+      level: "Advanced",
+      color: "success",
+      description: "Backend development with Express.js and RESTful APIs"
+    },
+    {
+      title: "Material-UI",
+      icon: <Icon icon="logos:material-ui" width={24} height={24} />,
+      level: "Expert",
+      color: "info",
+      description: "Creating beautiful, responsive interfaces with MUI components"
+    },
+    {
+      title: "Bootstrap",
+      icon: <Icon icon="logos:bootstrap" width={24} height={24} />,
+      level: "Expert",
+      color: "primary",
+      description: "Responsive design and rapid prototyping"
+    },
+    {
+      title: "Tailwind CSS",
+      icon: <Icon icon="logos:tailwindcss-icon" width={24} height={24} />,
+      level: "Advanced",
+      color: "info",
+      description: "Utility-first CSS framework for custom designs"
+    },
+  ];
+
+  const handleSaveProfile = () => {
+    setEditMode(false);
+    enqueueSnackbar("Profile updated successfully!", { variant: "success" });
   };
 
-  const currentData = salesData[period];
-
-  const revenueChartOptions = {
-    chart: {
-      type: "area",
-      height: 350,
-      toolbar: { show: false },
-    },
-    colors: ["#EB5E28"],
-    fill: {
-      type: "gradient",
-      gradient: {
-        shadeIntensity: 1,
-        opacityFrom: 0.7,
-        opacityTo: 0.1,
-      },
-    },
-    stroke: {
-      curve: "smooth",
-      width: 3,
-    },
-    xaxis: {
-      categories: chartData.revenue.categories,
-    },
-    yaxis: {
-      labels: {
-        formatter: (value) => `Rs ${value.toLocaleString()}`,
-      },
-    },
-    tooltip: {
-      y: {
-        formatter: (value) => `Rs ${value.toLocaleString()}`,
-      },
-    },
-  };
-
-  const ordersChartOptions = {
-    chart: {
-      type: "bar",
-      height: 350,
-      toolbar: { show: true },
-    },
-    colors: ["#C04410"],
-    plotOptions: {
-      bar: {
-        borderRadius: 4,
-        columnWidth: "20%",
-      },
-    },
-    dataLabels: {
-      enabled: false,  // <-- hides the text on bars
-    },
-    xaxis: {
-      categories: chartData.orders.categories,
-    },
-    yaxis: {
-      labels: {
-        formatter: (value) => Math.round(value),
-      },
-    },
-    responsive: [
-      {
-        breakpoint: 960,
-        options: {
-          plotOptions: {
-            bar: {
-              columnWidth: "50%", 
-            },
-          },
-        },
-      },
-    ],
-  };
-  
-
-  const topProductsChartOptions = {
-    chart: {
-      type: "donut",
-      height: 350,
-    },
-    // colors: ["#8E24AA", "#E91E63", "#00ACC1", "#4CAF50", "#FF9800"],
-    colors: ["#FFD6B0", "#FFA873", "#FF7A3D", "#EB5E28", "#B93D0F"],
-    labels: chartData.topProducts.map((product) => product.name),
-    legend: {
-      position: "bottom",
-    },
-    tooltip: {
-      y: {
-        formatter: (value) => `${value} sales`,
-      },
-    },
+  const handleInputChange = (field) => (event) => {
+    setProfileData({
+      ...profileData,
+      [field]: event.target.value,
+    });
   };
 
   return (
@@ -167,143 +137,193 @@ const Dashboard = () => {
         sx={{
           display: "flex",
           justifyContent: "space-between",
-          flexWrap: "wrap",
           alignItems: "center",
           mb: 3,
         }}
       >
         <Typography variant="h4" sx={{ fontWeight: 600 }}>
-          Dashboard
+          About Me
         </Typography>
-
-        <ToggleButtonGroup
-          value={period}
-          exclusive
-          onChange={handlePeriodChange}
-          size="small"
+        <Button
+          variant="outlined"
+          startIcon={<Icon icon="material-symbols:edit" />}
+          onClick={() => setEditMode(true)}
         >
-          <ToggleButton value="daily">Daily</ToggleButton>
-          <ToggleButton value="weekly">Weekly</ToggleButton>
-          <ToggleButton value="monthly">Monthly</ToggleButton>
-        </ToggleButtonGroup>
+          Edit Profile
+        </Button>
       </Box>
 
-      {/* Stats Cards */}
-      <div className="row mb-md-3">
-        <div className="col-xs-12 col-md-6 col-lg-3 mb-2">
-          <StatCard
-            title="Revenue"
-            value={`Rs ${currentData.revenue.toLocaleString()}`}
-            growth={currentData.growth}
-            icon={
-              <Icon
-                icon="material-symbols:attach-money"
-                width={30}
-                height={30}
-              />
-            }
-            color="primary"
-          />
+      {/* Profile Section */}
+      <Card sx={{ mb: 4 }}>
+        <CardContent sx={{ p: 4 }}>
+          <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
+            <Avatar
+              sx={{
+                width: 120,
+                height: 120,
+                mr: 4,
+                background: 'linear-gradient(135deg, #EB5E28 0%, #C04410 100%)',
+                fontSize: '3rem',
+                fontWeight: 'bold'
+              }}
+            >
+              S
+            </Avatar>
+            <Box sx={{ flex: 1 }}>
+              <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                {profileData.name}
+              </Typography>
+              <Typography variant="h6" color="primary" sx={{ mb: 2 }}>
+                {profileData.title}
+              </Typography>
+              <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
+                {profileData.bio}
+              </Typography>
+              <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
+                <Chip
+                  icon={<Icon icon="material-symbols:location-on" />}
+                  label={profileData.location}
+                  variant="outlined"
+                />
+                <Chip
+                  icon={<Icon icon="material-symbols:work" />}
+                  label={profileData.experience}
+                  variant="outlined"
+                />
+                <Chip
+                  icon={<Icon icon="material-symbols:email" />}
+                  label={profileData.email}
+                  variant="outlined"
+                />
+              </Box>
+            </Box>
+          </Box>
+        </CardContent>
+      </Card>
+
+      {/* Skills Section */}
+      <Paper sx={{ p: 3, mb: 4 }}>
+        <Typography variant="h5" sx={{ fontWeight: 600, mb: 3 }}>
+          Technical Skills
+        </Typography>
+        <div className="row g-3">
+          {skills.map((skill, index) => (
+            <div key={index} className="col-12 col-md-6 col-lg-4">
+              <SkillCard {...skill} />
+            </div>
+          ))}
         </div>
-        <div className="col-xs-12 col-md-6 col-lg-3 mb-2">
-          <StatCard
-            title="Orders"
-            value={currentData.orders}
-            growth={currentData.growth}
-            icon={
-              <Icon
-                icon="material-symbols:shopping-cart"
-                width={30}
-                height={30}
-              />
-            }
-            color="info"
-          />
+      </Paper>
+
+      {/* Quick Stats */}
+      <div className="row g-3">
+        <div className="col-12 col-md-4">
+          <Card sx={{ textAlign: 'center', p: 3 }}>
+            <Typography variant="h3" color="primary" sx={{ fontWeight: 'bold' }}>
+              15+
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+              Projects Completed
+            </Typography>
+          </Card>
         </div>
-        <div className="col-xs-12 col-md-6 col-lg-3 mb-2">
-          <StatCard
-            title="Customers"
-            value={currentData.customers}
-            growth={currentData.growth}
-            icon={<Icon icon="pepicons-print:people" width={30} height={30} />}
-            color="success"
-          />
+        <div className="col-12 col-md-4">
+          <Card sx={{ textAlign: 'center', p: 3 }}>
+            <Typography variant="h3" color="success.main" sx={{ fontWeight: 'bold' }}>
+              3+
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+              Years Experience
+            </Typography>
+          </Card>
         </div>
-        <div className="col-xs-12 col-md-6 col-lg-3 mb-2">
-          <StatCard
-            title="Growth"
-            value={`${currentData.growth}%`}
-            growth={currentData.growth}
-            icon={
-              <Icon
-                icon="material-symbols:trending-up"
-                width={30}
-                height={30}
-              />
-            }
-            color="warning"
-          />
+        <div className="col-12 col-md-4">
+          <Card sx={{ textAlign: 'center', p: 3 }}>
+            <Typography variant="h3" color="info.main" sx={{ fontWeight: 'bold' }}>
+              10+
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+              Technologies Mastered
+            </Typography>
+          </Card>
         </div>
       </div>
 
-      {/* Charts */}
-      <div className="row">
-        <div className="col-12 col-lg-8 mb-4">
-          <Paper
-            sx={{
-              p: { xs: 1, md: 3 },
-              borderRadius: 2,
-              width: "100%",
-              height: "100%",
-            }}
-          >
-            <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-              Revenue Trend
-            </Typography>
-            <Chart
-              options={revenueChartOptions}
-              series={chartData.revenue.series}
-              type="area"
-              height={350}
-            />
-          </Paper>
-        </div>
-
-        <div className="col-12 col-lg-4 mb-4">
-          <Paper
-            sx={{
-              p: { xs: 1, md: 3 },
-              borderRadius: 2,
-              width: "100%",
-              height: "100%",
-            }}
-          >
-            <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-              Top Products
-            </Typography>
-            <Chart
-              options={topProductsChartOptions}
-              series={chartData.topProducts.map((product) => product.sales)}
-              type="donut"
-              height={350}
-            />
-          </Paper>
-        </div>
-
-        <div className="col-12 mb-3">
-          <Paper sx={{ p: { xs: 1, md: 3 }, borderRadius: 2, width: "100%" }}>
-            <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-              Orders Overview
-            </Typography>
-            <Chart
-              options={ordersChartOptions}
-              series={chartData.orders.series}
-              type="bar"
-              height={350}
-            />
-          </Paper>
-        </div>
-      </div>
+      {/* Edit Profile Dialog */}
+      <Dialog open={editMode} onClose={() => setEditMode(false)} maxWidth="md" fullWidth>
+        <DialogTitle>Edit Profile</DialogTitle>
+        <DialogContent>
+          <Box sx={{ pt: 2 }}>
+            <div className="row g-3">
+              <div className="col-12">
+                <TextField
+                  fullWidth
+                  label="Full Name"
+                  value={profileData.name}
+                  onChange={handleInputChange('name')}
+                />
+              </div>
+              <div className="col-12">
+                <TextField
+                  fullWidth
+                  label="Professional Title"
+                  value={profileData.title}
+                  onChange={handleInputChange('title')}
+                />
+              </div>
+              <div className="col-12">
+                <TextField
+                  fullWidth
+                  label="Bio"
+                  multiline
+                  rows={4}
+                  value={profileData.bio}
+                  onChange={handleInputChange('bio')}
+                />
+              </div>
+              <div className="col-md-6">
+                <TextField
+                  fullWidth
+                  label="Location"
+                  value={profileData.location}
+                  onChange={handleInputChange('location')}
+                />
+              </div>
+              <div className="col-md-6">
+                <TextField
+                  fullWidth
+                  label="Experience"
+                  value={profileData.experience}
+                  onChange={handleInputChange('experience')}
+                />
+              </div>
+              <div className="col-md-6">
+                <TextField
+                  fullWidth
+                  label="Email"
+                  type="email"
+                  value={profileData.email}
+                  onChange={handleInputChange('email')}
+                />
+              </div>
+              <div className="col-md-6">
+                <TextField
+                  fullWidth
+                  label="Phone"
+                  value={profileData.phone}
+                  onChange={handleInputChange('phone')}
+                />
+              </div>
+            </div>
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setEditMode(false)}>Cancel</Button>
+          <Button variant="contained" onClick={handleSaveProfile}>
+            Save Changes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

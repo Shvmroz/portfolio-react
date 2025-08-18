@@ -4,53 +4,42 @@ import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
 import { SnackbarProvider } from 'notistack';
 import { theme } from './theme/theme';
-import { AuthProvider } from './context/AuthContext';
+import { ThemeContextProvider } from './context/ThemeContext';
 
 // Components
-import Login from './components/Auth/Login';
 import MainLayout from './components/Layout/MainLayout';
 import Dashboard from './components/Pages/Dashboard/Dashboard';
-import Products from './components/Pages/Products/Products';
-import Orders from './components/Pages/Orders/Orders';
-import Settings from './components/Pages/Settings/Settings';
-import ProtectedRoute from './components/Extra/ProtectedRoute';
+import Projects from './components/Pages/Projects/Projects';
+import CV from './components/Pages/CV/CV';
+
 // Bootstrap CSS
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <SnackbarProvider 
-        maxSnack={3}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'right',
-        }}
-      >
-        <AuthProvider>
+    <ThemeContextProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <SnackbarProvider 
+          maxSnack={3}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+          }}
+        >
           <Router>
             <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route
-                path="/"
-                element={
-                  <ProtectedRoute>
-                    <MainLayout />
-                  </ProtectedRoute>
-                }
-              >
+              <Route path="/" element={<MainLayout />}>
                 <Route index element={<Navigate to="/dashboard" replace />} />
                 <Route path="dashboard" element={<Dashboard />} />
-                <Route path="products" element={<Products />} />
-                <Route path="orders" element={<Orders />} />
-                <Route path="settings" element={<Settings />} />
+                <Route path="projects" element={<Projects />} />
+                <Route path="cv" element={<CV />} />
               </Route>
             </Routes>
           </Router>
-        </AuthProvider>
-      </SnackbarProvider>
-    </ThemeProvider>
+        </SnackbarProvider>
+      </ThemeProvider>
+    </ThemeContextProvider>
   );
 }
 
