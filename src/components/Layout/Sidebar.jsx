@@ -83,17 +83,19 @@ const Sidebar = ({ mobileOpen, handleDrawerToggle }) => {
               sx={{
                 borderRadius: 2,
                 "&.Mui-selected": {
-                  backgroundColor: "secondary.main",
+                  backgroundColor: (theme) => theme.palette.mode === 'dark' ? "primary.main" : "secondary.main",
                   color: "white",
                   "&:hover": {
-                    backgroundColor: "secondary.dark",
+                    backgroundColor: (theme) => theme.palette.mode === 'dark' ? "primary.dark" : "secondary.dark",
                   },
                   "& .MuiListItemIcon-root": {
                     color: "white",
                   },
                 },
                 "&:hover": {
-                  backgroundColor: "secondary.light",
+                  backgroundColor: (theme) => theme.palette.mode === 'dark' 
+                    ? "primary.main" 
+                    : "secondary.light",
                   color: "white",
                   "& .MuiListItemIcon-root": {
                     color: "white",

@@ -13,7 +13,21 @@ import { Icon } from "@iconify/react";
 import VSCodeEditor from "./VSCodeEditor";
 
 const SkillCard = ({ title, icon, level, color, description }) => (
-  <Card sx={{ height: '100%', backgroundColor: `${color}.soft` }}>
+  <Card 
+    sx={{ 
+      height: '100%', 
+      background: (theme) => theme.palette.mode === 'dark' 
+        ? `linear-gradient(135deg, ${theme.palette[color].main}15 0%, ${theme.palette[color].main}08 100%)`
+        : `linear-gradient(135deg, ${theme.palette[color].main}12 0%, ${theme.palette[color].main}06 100%)`,
+      border: (theme) => `1px solid ${theme.palette[color].main}20`,
+      transition: 'all 0.3s ease',
+      '&:hover': {
+        transform: 'translateY(-4px)',
+        boxShadow: (theme) => `0 8px 25px ${theme.palette[color].main}25`,
+        border: (theme) => `1px solid ${theme.palette[color].main}40`,
+      }
+    }}
+  >
     <CardContent>
       <Box
         sx={{
@@ -31,23 +45,36 @@ const SkillCard = ({ title, icon, level, color, description }) => (
             width: 50,
             height: 50,
             borderRadius: "50%",
-            backgroundColor: `${color}.light`,
+            background: (theme) => theme.palette.mode === 'dark'
+              ? `linear-gradient(135deg, ${theme.palette[color].main}25 0%, ${theme.palette[color].main}15 100%)`
+              : `linear-gradient(135deg, ${theme.palette[color].main}20 0%, ${theme.palette[color].main}10 100%)`,
             color: `${color}.main`,
+            border: (theme) => `2px solid ${theme.palette[color].main}30`,
           }}
         >
           {icon}
         </Box>
         <Chip
           label={level}
-          color={color}
+          sx={{
+            backgroundColor: `${color}.main`,
+            color: 'white',
+            fontWeight: 600,
+            fontSize: '0.75rem',
+          }}
           size="small"
-          variant="outlined"
         />
       </Box>
       <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
         {title}
       </Typography>
-      <Typography variant="body2" color="text.secondary">
+      <Typography 
+        variant="body2" 
+        sx={{ 
+          color: 'text.secondary',
+          lineHeight: 1.4,
+        }}
+      >
         {description}
       </Typography>
     </CardContent>
@@ -77,7 +104,7 @@ const Dashboard = () => {
       title: "Next.js",
       icon: <Icon icon="logos:nextjs-icon" width={24} height={24} />,
       level: "Advanced",
-      color: "secondary",
+      color: "primary",
       description: "Server-side rendering, API routes, and full-stack applications"
     },
     {
@@ -98,7 +125,7 @@ const Dashboard = () => {
       title: "Bootstrap",
       icon: <Icon icon="logos:bootstrap" width={24} height={24} />,
       level: "Expert",
-      color: "primary",
+      color: "secondary",
       description: "Responsive design and rapid prototyping"
     },
     {
