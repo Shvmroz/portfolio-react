@@ -47,7 +47,7 @@ const Header = ({ handleDrawerToggle }) => {
             color: "primary.main",
           }}
         >
-          Muhammad Shamroz Khan
+          Portfolio
         </Typography>
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>

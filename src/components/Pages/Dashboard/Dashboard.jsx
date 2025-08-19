@@ -8,15 +8,9 @@ import {
   Avatar,
   Chip,
   Paper,
-  Button,
-  TextField,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
 } from "@mui/material";
 import { Icon } from "@iconify/react";
-import { useSnackbar } from "notistack";
+import VSCodeEditor from "./VSCodeEditor";
 
 const SkillCard = ({ title, icon, level, color, description }) => (
   <Card sx={{ height: '100%', backgroundColor: `${color}.soft` }}>
@@ -61,8 +55,7 @@ const SkillCard = ({ title, icon, level, color, description }) => (
 );
 
 const Dashboard = () => {
-  const [editMode, setEditMode] = useState(false);
-  const [profileData, setProfileData] = useState({
+  const profileData = {
     name: "Muhammad Shamroz Khan",
     title: "Full Stack Web Developer",
     bio: "Passionate web developer with expertise in modern JavaScript frameworks and backend technologies. I love creating efficient, scalable, and user-friendly web applications.",
@@ -70,9 +63,7 @@ const Dashboard = () => {
     email: "shamrozkhan@example.com",
     phone: "+92-XXX-XXXXXXX",
     experience: "3+ Years",
-  });
-
-  const { enqueueSnackbar } = useSnackbar();
+  };
 
   const skills = [
     {
@@ -119,17 +110,6 @@ const Dashboard = () => {
     },
   ];
 
-  const handleSaveProfile = () => {
-    setEditMode(false);
-    enqueueSnackbar("Profile updated successfully!", { variant: "success" });
-  };
-
-  const handleInputChange = (field) => (event) => {
-    setProfileData({
-      ...profileData,
-      [field]: event.target.value,
-    });
-  };
 
   return (
     <Box sx={{ width: "100vw", maxWidth: "100%" }}>
@@ -142,15 +122,13 @@ const Dashboard = () => {
         }}
       >
         <Typography variant="h4" sx={{ fontWeight: 600 }}>
-          About Me
+          Dashboard
         </Typography>
-        <Button
-          variant="outlined"
-          startIcon={<Icon icon="material-symbols:edit" />}
-          onClick={() => setEditMode(true)}
-        >
-          Edit Profile
-        </Button>
+      </Box>
+
+      {/* VSCode Editor */}
+      <Box sx={{ mb: 4 }}>
+        <VSCodeEditor />
       </Box>
 
       {/* Profile Section */}
@@ -249,81 +227,6 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Edit Profile Dialog */}
-      <Dialog open={editMode} onClose={() => setEditMode(false)} maxWidth="md" fullWidth>
-        <DialogTitle>Edit Profile</DialogTitle>
-        <DialogContent>
-          <Box sx={{ pt: 2 }}>
-            <div className="row g-3">
-              <div className="col-12">
-                <TextField
-                  fullWidth
-                  label="Full Name"
-                  value={profileData.name}
-                  onChange={handleInputChange('name')}
-                />
-              </div>
-              <div className="col-12">
-                <TextField
-                  fullWidth
-                  label="Professional Title"
-                  value={profileData.title}
-                  onChange={handleInputChange('title')}
-                />
-              </div>
-              <div className="col-12">
-                <TextField
-                  fullWidth
-                  label="Bio"
-                  multiline
-                  rows={4}
-                  value={profileData.bio}
-                  onChange={handleInputChange('bio')}
-                />
-              </div>
-              <div className="col-md-6">
-                <TextField
-                  fullWidth
-                  label="Location"
-                  value={profileData.location}
-                  onChange={handleInputChange('location')}
-                />
-              </div>
-              <div className="col-md-6">
-                <TextField
-                  fullWidth
-                  label="Experience"
-                  value={profileData.experience}
-                  onChange={handleInputChange('experience')}
-                />
-              </div>
-              <div className="col-md-6">
-                <TextField
-                  fullWidth
-                  label="Email"
-                  type="email"
-                  value={profileData.email}
-                  onChange={handleInputChange('email')}
-                />
-              </div>
-              <div className="col-md-6">
-                <TextField
-                  fullWidth
-                  label="Phone"
-                  value={profileData.phone}
-                  onChange={handleInputChange('phone')}
-                />
-              </div>
-            </div>
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setEditMode(false)}>Cancel</Button>
-          <Button variant="contained" onClick={handleSaveProfile}>
-            Save Changes
-          </Button>
-        </DialogActions>
-      </Dialog>
     </Box>
   );
 };

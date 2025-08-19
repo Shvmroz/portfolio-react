@@ -144,14 +144,6 @@ const Projects = () => {
         <Typography variant="h4" sx={{ fontWeight: 600 }}>
           My Projects
         </Typography>
-        <Button
-          className="gradient-button"
-          variant="contained"
-          startIcon={<Icon icon="material-symbols:add" />}
-          onClick={handleAddProject}
-        >
-          Add Project
-        </Button>
       </Box>
 
       {/* Filters */}

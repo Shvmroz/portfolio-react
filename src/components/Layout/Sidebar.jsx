@@ -18,7 +18,7 @@ const drawerWidth = 280;
 
 const menuItems = [
   {
-    text: "About Me",
+    text: "Dashboard",
     icon: <Icon icon="material-symbols:person" />,
     path: "/dashboard",
   },

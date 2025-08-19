@@ -1,9 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
 import { SnackbarProvider } from 'notistack';
-import { theme } from './theme/theme';
 import { ThemeContextProvider } from './context/ThemeContext';
 
 // Components
@@ -18,7 +16,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function App() {
   return (
     <ThemeContextProvider>
-      <ThemeProvider theme={theme}>
         <CssBaseline />
         <SnackbarProvider 
           maxSnack={3}
@@ -38,7 +35,6 @@ function App() {
             </Routes>
           </Router>
         </SnackbarProvider>
-      </ThemeProvider>
     </ThemeContextProvider>
   );
 }

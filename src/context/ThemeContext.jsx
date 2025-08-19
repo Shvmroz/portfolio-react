@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { createTheme } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const ThemeContext = createContext();
 
@@ -96,8 +96,10 @@ export const ThemeContextProvider = ({ children }) => {
   };
 
   return (
-    <ThemeContext.Provider value={value}>
-      {children}
-    </ThemeContext.Provider>
+    <ThemeProvider theme={currentTheme}>
+      <ThemeContext.Provider value={value}>
+        {children}
+      </ThemeContext.Provider>
+    </ThemeProvider>
   );
 };
