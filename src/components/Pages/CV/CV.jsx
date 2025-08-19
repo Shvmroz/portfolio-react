@@ -122,22 +122,6 @@ const CV = () => {
         <Typography variant="h4" sx={{ fontWeight: 600 }}>
           CV & Resume
         </Typography>
-        <Box sx={{ display: "flex", gap: 2 }}>
-          <Button
-            variant="outlined"
-            startIcon={<Icon icon="material-symbols:edit" />}
-            onClick={() => setEditMode(true)}
-          >
-            Edit CV
-          </Button>
-          <Button
-            variant="contained"
-            startIcon={<Icon icon="material-symbols:download" />}
-            onClick={handleDownloadCV}
-          >
-            Download PDF
-          </Button>
-        </Box>
       </Box>
 
       <Grid container spacing={3}>

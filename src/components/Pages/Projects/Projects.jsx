@@ -274,6 +274,7 @@ const Projects = () => {
                     zIndex: 1,
                     color: "#403D39",
                     backgroundColor: "#d3d3d37a",
+                    display: 'none'
                   }}
                   aria-controls={
                     menuProjectId === project.id ? "project-menu" : undefined
