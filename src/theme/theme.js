@@ -3,7 +3,7 @@ import { createTheme } from '@mui/material/styles';
 const baseTheme = {
   palette: {
     primary: {
-      main: '#000000',
+      main: '#333333',
       light: '#FFD1BC',
       soft: '#FFF3EB',
       dark: '#C04410',

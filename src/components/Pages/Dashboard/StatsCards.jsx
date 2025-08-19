@@ -11,7 +11,7 @@ const statsData = [
   },
   {
     id: 2,
-    number: "1.5+",
+    number: "2+",
     label: "Years Experience",
     icon: "mdi:briefcase-outline",
     className: "experience",

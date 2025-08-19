@@ -10,10 +10,11 @@ import {
   Box,
   Divider,
   Avatar,
+  IconButton,
 } from "@mui/material";
 import { Icon } from "@iconify/react";
 import { useNavigate, useLocation } from "react-router-dom";
-
+import myImage from "../../assets/1752006032367.png";
 const drawerWidth = 280;
 
 const menuItems = [
@@ -50,14 +51,19 @@ const Sidebar = ({ mobileOpen, handleDrawerToggle }) => {
       {/* Header */}
       <Box sx={{ p: 3, borderBottom: "1px solid #e0e0e0" }}>
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Avatar
-            sx={{
-              width: 40,
-              height: 40,
-              mr: 2,
-              background: "linear-gradient(135deg, #EB5E28 0%, #C04410 100%)",
-            }}
-          ></Avatar>
+          <a href={myImage} target="_blank" rel="noopener noreferrer">
+            <Avatar
+              src={myImage}
+              sx={{
+                width: 60,
+                height: 60,
+                mr: 2,
+                background: "linear-gradient(135deg, #EB5E28 0%, #C04410 100%)",
+                cursor: "pointer", // shows hand cursor
+              }}
+            />
+          </a>
+
           <Box>
             <Typography
               className="text-uppercase"
@@ -101,7 +107,7 @@ const Sidebar = ({ mobileOpen, handleDrawerToggle }) => {
                 "&:hover": {
                   backgroundColor: (theme) =>
                     theme.palette.mode === "dark"
-                      ? "primary.main"
+                      ? "#772b00"
                       : "secondary.light",
                   color: "white",
                   "& .MuiListItemIcon-root": {
@@ -120,11 +126,58 @@ const Sidebar = ({ mobileOpen, handleDrawerToggle }) => {
         ))}
       </List>
 
+      {/* <SidebarContactForm /> */}
       <Divider />
-      <Box sx={{ p: 2 }}>
-        <Typography variant="caption" color="text.secondary">
-          © 2024 Muhammad Shamroz Khan
-        </Typography>
+
+      <Box sx={{ display: "flex", justifyContent: "center", gap: 2, p: 2 }}>
+        {/* Email */}
+        <IconButton
+          component="a"
+          href="mailto:shvmroz@gmail.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Icon icon="mdi:email" fontSize={24} />
+        </IconButton>
+
+        {/* LinkedIn */}
+        <IconButton
+          component="a"
+          href="https://www.linkedin.com/in/shvmroz"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Icon icon="mdi:linkedin" fontSize={24} color="#0A66C2" />
+        </IconButton>
+        {/* GitHub */}
+        <IconButton
+          component="a"
+          href="https://github.com/Shvmroz"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Icon icon="mdi:github" fontSize={26} />
+        </IconButton>
+
+        {/* WhatsApp */}
+        <IconButton
+          component="a"
+          href="https://wa.me/923066520002"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Icon icon="mdi:whatsapp" fontSize={24} color="#25D366" />
+        </IconButton>
+
+        {/* Instagram */}
+        <IconButton
+          component="a"
+          href="https://www.instagram.com/shvmroz"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Icon icon="mdi:instagram" fontSize={26} color="#E4405F" />
+        </IconButton>
       </Box>
     </Box>
   );

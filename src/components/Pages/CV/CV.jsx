@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import {
   Box,
   Typography,
@@ -13,57 +13,70 @@ import {
   ListItemIcon,
   Divider,
   Chip,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
+  Avatar,
+  Stack,
 } from "@mui/material";
 import { Icon } from "@iconify/react";
 import { useSnackbar } from "notistack";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+import myImage from "../../../assets/1752006032367.png";
 
 const CV = () => {
-  const [editMode, setEditMode] = useState(false);
-  const [cvData, setCvData] = useState({
+  const cvRef = useRef(null);
+  const { enqueueSnackbar } = useSnackbar();
+
+  const cvData = {
     personalInfo: {
       name: "Muhammad Shamroz Khan",
-      title: "Full Stack Web Developer",
-      email: "shamrozkhan@example.com",
-      phone: "+92-XXX-XXXXXXX",
-      location: "Pakistan",
-      linkedin: "linkedin.com/in/shamrozkhan",
-      github: "github.com/shamrozkhan",
+      title: "Web Application Developer",
+      email: "shvmroz@gmail.com",
+      phone: "+923066520002",
+      location: "Sahiwal Division, Punjab, Pakistan",
+      linkedin: "https://www.linkedin.com/in/shvmroz",
+      github: "https://github.com/shvmroz",
     },
-    summary: "Passionate Full Stack Web Developer with 3+ years of experience in building modern web applications using React.js, Next.js, Node.js, and various other technologies. Strong problem-solving skills and a keen eye for detail.",
+    summary:
+      "Passionate Web Application Developer with hands-on experience building React and Node applications. Skilled in modern frontend and backend technologies, with a focus on performance and maintainability.",
     experience: [
       {
         id: 1,
-        title: "Full Stack Developer",
-        company: "Tech Solutions Inc.",
-        duration: "2022 - Present",
-        description: "Developed and maintained web applications using React.js, Node.js, and MongoDB. Collaborated with cross-functional teams to deliver high-quality software solutions.",
+        companyName: "Meta Logix Tech",
+        role: "React Developer",
+        type: "Internship",
+        period: "Oct 2024 - Present · 11 mos",
+        location: "Sahiwal Division, Punjab, Pakistan",
+        tags: ["React.js"],
       },
       {
         id: 2,
-        title: "Frontend Developer",
-        company: "Digital Agency",
-        duration: "2021 - 2022",
-        description: "Created responsive web interfaces using React.js, Material-UI, and Bootstrap. Worked closely with designers to implement pixel-perfect designs.",
+        companyName: "Medtronix Systems",
+        role: "React Developer",
+        type: "Part-time",
+        period: "May 2024 - Aug 2024 · 4 mos",
+        location: "Sahiwal Division, Punjab, Pakistan · On-site",
+        tags: ["React.js"],
       },
     ],
     education: [
       {
         id: 1,
-        degree: "Bachelor of Computer Science",
-        institution: "University of Technology",
-        year: "2021",
-        description: "Graduated with honors. Specialized in Software Engineering and Web Development.",
+        institution: "Government College University, Faisalabad",
+        degree: "Master's degree, Computer Science",
+        period: "Nov 2021 - Apr 2023",
+        extra: "Grade: 3.4",
       },
     ],
     skills: [
-      "React.js", "Next.js", "Node.js", "JavaScript", "TypeScript",
-      "Material-UI", "Bootstrap", "Tailwind CSS", "MongoDB", "PostgreSQL",
-      "Git", "Docker", "AWS", "REST APIs", "GraphQL"
+      "React.js",
+      "Next.js",
+      "Node.js",
+      "JavaScript",
+      "TypeScript",
+      "Material-UI",
+      "Tailwind CSS",
+      "Git",
+      "Netlify",
     ],
     certifications: [
       {
@@ -79,33 +92,29 @@ const CV = () => {
         year: "2022",
       },
     ],
-  });
-
-  const { enqueueSnackbar } = useSnackbar();
-
-  const handleDownloadCV = () => {
-    enqueueSnackbar("CV download feature will be implemented soon!", { variant: "info" });
   };
 
-  const handleSaveCV = () => {
-    setEditMode(false);
-    enqueueSnackbar("CV updated successfully!", { variant: "success" });
-  };
+  const handleDownloadCV = async () => {
+    if (!cvRef.current) return;
+    try {
+      const element = cvRef.current;
+      const canvas = await html2canvas(element, { scale: 2, useCORS: true });
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "pt",
+        format: "a4",
+      });
 
-  const handleInputChange = (section, field) => (event) => {
-    if (section === 'personalInfo') {
-      setCvData({
-        ...cvData,
-        personalInfo: {
-          ...cvData.personalInfo,
-          [field]: event.target.value,
-        },
-      });
-    } else {
-      setCvData({
-        ...cvData,
-        [field]: event.target.value,
-      });
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+      pdf.save("Shamroz_CV.pdf");
+      enqueueSnackbar("CV downloaded", { variant: "success" });
+    } catch (err) {
+      console.error(err);
+      enqueueSnackbar("Failed to download CV", { variant: "error" });
     }
   };
 
@@ -122,217 +131,234 @@ const CV = () => {
         <Typography variant="h4" sx={{ fontWeight: 600 }}>
           CV & Resume
         </Typography>
+
+        <Button
+          startIcon={<Icon icon="mdi:download" />}
+          variant="outlined"
+          size="small"
+          onClick={handleDownloadCV}
+        >
+          Download CV
+        </Button>
       </Box>
 
-      <Grid container spacing={3}>
-        {/* Personal Information */}
-        <Grid item xs={12} md={4}>
-          <Card sx={{ mb: 3 }}>
-            <CardContent>
-              <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-                Personal Information
+      {/* CV Content (full width Paper) */}
+      <Paper ref={cvRef} elevation={1} sx={{ width: "100%", mb: 3, p: 3 }}>
+        {/* Personal Info */}
+        <Card sx={{ mb: 3 }}>
+          <CardContent>
+            <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
+              <Avatar
+                src={myImage}
+                alt="Shamroz"
+                sx={{
+                  width: 64,
+                  height: 64,
+                  mr: 2,
+                  background: "linear-gradient(135deg,#EB5E28,#C04410)",
+                }}
+              />
+              <Box>
+                <Typography sx={{ fontWeight: 700 }}>
+                  {cvData.personalInfo.name}
+                </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  {cvData.personalInfo.title}
+                </Typography>
+              </Box>
+            </Box>
+
+            <Divider sx={{ mb: 1 }} />
+
+            <List dense>
+              <ListItem>
+                <ListItemIcon>
+                  <Icon icon="ic:outline-email" width={18} />
+                </ListItemIcon>
+                <ListItemText
+                  primary={
+                    <a
+                      href={`mailto:${cvData.personalInfo.email}`}
+                      style={{ textDecoration: "none", color: "inherit" }}
+                    >
+                      {cvData.personalInfo.email}
+                    </a>
+                  }
+                />
+              </ListItem>
+
+              <ListItem>
+                <ListItemIcon>
+                  <Icon icon="line-md:phone" width={18} />
+                </ListItemIcon>
+                <ListItemText primary={cvData.personalInfo.phone} />
+              </ListItem>
+
+              <ListItem>
+                <ListItemIcon>
+                  <Icon icon="material-symbols:location-on" width={18} />
+                </ListItemIcon>
+                <ListItemText primary={cvData.personalInfo.location} />
+              </ListItem>
+
+              <ListItem>
+                <ListItemIcon>
+                  <Icon icon="mdi:linkedin" width={18} />
+                </ListItemIcon>
+                <ListItemText
+                  primary={
+                    <a
+                      href={cvData.personalInfo.linkedin}
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{ textDecoration: "none", color: "inherit" }}
+                    >
+                      LinkedIn
+                    </a>
+                  }
+                />
+              </ListItem>
+
+              <ListItem>
+                <ListItemIcon>
+                  <Icon icon="mdi:github" width={18} />
+                </ListItemIcon>
+                <ListItemText
+                  primary={
+                    <a
+                      href={cvData.personalInfo.github}
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{ textDecoration: "none", color: "inherit" }}
+                    >
+                      GitHub
+                    </a>
+                  }
+                />
+              </ListItem>
+            </List>
+          </CardContent>
+        </Card>
+
+        {/* Skills */}
+        <Card sx={{ mb: 3 }}>
+          <CardContent>
+            <Typography variant="subtitle1" sx={{ mb: 1, fontWeight: 600 }}>
+              Skills
+            </Typography>
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
+              {cvData.skills.map((s, i) => (
+                <Chip key={i} label={s} size="small" />
+              ))}
+            </Box>
+          </CardContent>
+        </Card>
+
+        {/* Summary */}
+        <Paper sx={{ p: 2, mb: 2 }}>
+          <Typography variant="h6" sx={{ fontWeight: 700 }}>
+            Professional Summary
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {cvData.summary}
+          </Typography>
+        </Paper>
+
+        {/* Work Experience */}
+        <Paper sx={{ p: 2, mb: 2 }}>
+          <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
+            Work Experience
+          </Typography>
+          {cvData.experience.map((exp) => (
+            <Box key={exp.id} sx={{ mb: 2 }}>
+              <Stack direction="row" spacing={2} alignItems="center">
+                <Avatar variant="rounded" sx={{ width: 48, height: 48 }} />
+                <Box>
+                  <Typography sx={{ fontWeight: 700 }}>
+                    {exp.companyName}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    {exp.role} • {exp.type}
+                  </Typography>
+                </Box>
+              </Stack>
+
+              <Box sx={{ ml: 7, mt: 1 }}>
+                <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                  {exp.role}
+                </Typography>
+                <Typography
+                  variant="caption"
+                  color="primary"
+                  sx={{ display: "block", mb: 0.5 }}
+                >
+                  {exp.period}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ mb: 1 }}
+                >
+                  {exp.location}
+                </Typography>
+
+                <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+                  {(exp.tags || []).map((t, idx) => (
+                    <Chip key={idx} label={t} size="small" />
+                  ))}
+                </Box>
+              </Box>
+
+              <Divider sx={{ mt: 2 }} />
+            </Box>
+          ))}
+        </Paper>
+
+        {/* Education */}
+        <Paper sx={{ p: 2, mb: 2 }}>
+          <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
+            Education
+          </Typography>
+          {cvData.education.map((edu) => (
+            <Box key={edu.id} sx={{ mb: 2 }}>
+              <Stack direction="row" spacing={2} alignItems="center">
+                <Avatar variant="rounded" sx={{ width: 48, height: 48 }} />
+                <Box>
+                  <Typography sx={{ fontWeight: 700 }}>
+                    {edu.institution}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    {edu.degree}
+                  </Typography>
+                </Box>
+              </Stack>
+
+              <Box sx={{ ml: 7, mt: 1 }}>
+                <Typography variant="caption" color="text.secondary">
+                  {edu.period} • {edu.extra}
+                </Typography>
+              </Box>
+
+              <Divider sx={{ mt: 2 }} />
+            </Box>
+          ))}
+        </Paper>
+
+        {/* Certifications */}
+        <Paper sx={{ p: 2 }}>
+          <Typography variant="h6" sx={{ fontWeight: 700, mb: 1 }}>
+            Certifications
+          </Typography>
+          {cvData.certifications.map((c) => (
+            <Box key={c.id} sx={{ mb: 1 }}>
+              <Typography sx={{ fontWeight: 600 }}>{c.name}</Typography>
+              <Typography variant="caption" color="text.secondary">
+                {c.issuer} • {c.year}
               </Typography>
-              <List dense>
-                <ListItem>
-                  <ListItemIcon>
-                    <Icon icon="material-symbols:person" />
-                  </ListItemIcon>
-                  <ListItemText primary={cvData.personalInfo.name} />
-                </ListItem>
-                <ListItem>
-                  <ListItemIcon>
-                    <Icon icon="material-symbols:work" />
-                  </ListItemIcon>
-                  <ListItemText primary={cvData.personalInfo.title} />
-                </ListItem>
-                <ListItem>
-                  <ListItemIcon>
-                    <Icon icon="material-symbols:email" />
-                  </ListItemIcon>
-                  <ListItemText primary={cvData.personalInfo.email} />
-                </ListItem>
-                <ListItem>
-                  <ListItemIcon>
-                    <Icon icon="material-symbols:phone" />
-                  </ListItemIcon>
-                  <ListItemText primary={cvData.personalInfo.phone} />
-                </ListItem>
-                <ListItem>
-                  <ListItemIcon>
-                    <Icon icon="material-symbols:location-on" />
-                  </ListItemIcon>
-                  <ListItemText primary={cvData.personalInfo.location} />
-                </ListItem>
-                <ListItem>
-                  <ListItemIcon>
-                    <Icon icon="mdi:linkedin" />
-                  </ListItemIcon>
-                  <ListItemText primary={cvData.personalInfo.linkedin} />
-                </ListItem>
-                <ListItem>
-                  <ListItemIcon>
-                    <Icon icon="mdi:github" />
-                  </ListItemIcon>
-                  <ListItemText primary={cvData.personalInfo.github} />
-                </ListItem>
-              </List>
-            </CardContent>
-          </Card>
-
-          {/* Skills */}
-          <Card>
-            <CardContent>
-              <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-                Technical Skills
-              </Typography>
-              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
-                {cvData.skills.map((skill, index) => (
-                  <Chip
-                    key={index}
-                    label={skill}
-                    variant="outlined"
-                    size="small"
-                  />
-                ))}
-              </Box>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        {/* Main Content */}
-        <Grid item xs={12} md={8}>
-          {/* Summary */}
-          <Paper sx={{ p: 3, mb: 3 }}>
-            <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-              Professional Summary
-            </Typography>
-            <Typography variant="body1" color="text.secondary">
-              {cvData.summary}
-            </Typography>
-          </Paper>
-
-          {/* Experience */}
-          <Paper sx={{ p: 3, mb: 3 }}>
-            <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-              Work Experience
-            </Typography>
-            {cvData.experience.map((exp, index) => (
-              <Box key={exp.id} sx={{ mb: index < cvData.experience.length - 1 ? 3 : 0 }}>
-                <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-                  {exp.title}
-                </Typography>
-                <Typography variant="subtitle2" color="primary" sx={{ mb: 1 }}>
-                  {exp.company} • {exp.duration}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {exp.description}
-                </Typography>
-                {index < cvData.experience.length - 1 && <Divider sx={{ mt: 2 }} />}
-              </Box>
-            ))}
-          </Paper>
-
-          {/* Education */}
-          <Paper sx={{ p: 3, mb: 3 }}>
-            <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-              Education
-            </Typography>
-            {cvData.education.map((edu, index) => (
-              <Box key={edu.id} sx={{ mb: index < cvData.education.length - 1 ? 3 : 0 }}>
-                <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-                  {edu.degree}
-                </Typography>
-                <Typography variant="subtitle2" color="primary" sx={{ mb: 1 }}>
-                  {edu.institution} • {edu.year}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {edu.description}
-                </Typography>
-                {index < cvData.education.length - 1 && <Divider sx={{ mt: 2 }} />}
-              </Box>
-            ))}
-          </Paper>
-
-          {/* Certifications */}
-          <Paper sx={{ p: 3 }}>
-            <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-              Certifications
-            </Typography>
-            {cvData.certifications.map((cert, index) => (
-              <Box key={cert.id} sx={{ mb: index < cvData.certifications.length - 1 ? 2 : 0 }}>
-                <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-                  {cert.name}
-                </Typography>
-                <Typography variant="subtitle2" color="primary">
-                  {cert.issuer} • {cert.year}
-                </Typography>
-                {index < cvData.certifications.length - 1 && <Divider sx={{ mt: 2 }} />}
-              </Box>
-            ))}
-          </Paper>
-        </Grid>
-      </Grid>
-
-      {/* Edit CV Dialog */}
-      <Dialog open={editMode} onClose={() => setEditMode(false)} maxWidth="md" fullWidth>
-        <DialogTitle>Edit CV Information</DialogTitle>
-        <DialogContent>
-          <Box sx={{ pt: 2 }}>
-            <Typography variant="h6" sx={{ mb: 2 }}>Personal Information</Typography>
-            <div className="row g-3 mb-4">
-              <div className="col-md-6">
-                <TextField
-                  fullWidth
-                  label="Full Name"
-                  value={cvData.personalInfo.name}
-                  onChange={handleInputChange('personalInfo', 'name')}
-                />
-              </div>
-              <div className="col-md-6">
-                <TextField
-                  fullWidth
-                  label="Professional Title"
-                  value={cvData.personalInfo.title}
-                  onChange={handleInputChange('personalInfo', 'title')}
-                />
-              </div>
-              <div className="col-md-6">
-                <TextField
-                  fullWidth
-                  label="Email"
-                  value={cvData.personalInfo.email}
-                  onChange={handleInputChange('personalInfo', 'email')}
-                />
-              </div>
-              <div className="col-md-6">
-                <TextField
-                  fullWidth
-                  label="Phone"
-                  value={cvData.personalInfo.phone}
-                  onChange={handleInputChange('personalInfo', 'phone')}
-                />
-              </div>
-            </div>
-            
-            <Typography variant="h6" sx={{ mb: 2 }}>Professional Summary</Typography>
-            <TextField
-              fullWidth
-              label="Summary"
-              multiline
-              rows={4}
-              value={cvData.summary}
-              onChange={handleInputChange(null, 'summary')}
-              sx={{ mb: 3 }}
-            />
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setEditMode(false)}>Cancel</Button>
-          <Button variant="contained" onClick={handleSaveCV}>
-            Save Changes
-          </Button>
-        </DialogActions>
-      </Dialog>
+            </Box>
+          ))}
+        </Paper>
+      </Paper>
     </Box>
   );
 };

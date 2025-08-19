@@ -80,7 +80,7 @@ const Header = ({ handleDrawerToggle }) => {
             flexGrow: 1,
             fontSize: "1rem",
             fontWeight: 600,
-            color: "#2D2D30",
+            color: isDarkMode ? "#ffffff" : "#2D2D30",
           }}
         >
           👋 Welcome! Good to see you
@@ -107,10 +107,10 @@ const Header = ({ handleDrawerToggle }) => {
               width={32}
               height={32}
               style={{
-                color: isDarkMode ? "#AAAAAA" : "#EB5E28",
+                color: isDarkMode ? "#AAAAAA" : "#FFBD2E",
                 textShadow: isDarkMode
                   ? "none"
-                  : "0 0 4px #EB5E28, 0 0 8px #EB5E28, 0 0 12px #EB5E28",
+                  : "0 0 4px #FFBD2E, 0 0 8px #FFBD2E, 0 0 12px #FFBD2E",
                 transition: "all 1s ease",
               }}
             />

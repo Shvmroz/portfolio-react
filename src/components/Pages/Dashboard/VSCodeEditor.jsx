@@ -11,8 +11,8 @@ const VSCodeEditor = () => {
     "const developer = {",
     "  Status: true, //Available-For-New-Opportunities",
     '  name: "Muhammad Shamroz Khan",',
-    '  role: "Full Stack Web Developer",',
-    '  experience: "1+ years",',
+    '  role: "Web Application Developer",',
+    '  experience: "2 years",',
     '  email: "shvmroz@gmail.com",',
     '  phone: "+923066520002", //Whats-App',
     '  location: "Pakistan",',
@@ -105,7 +105,9 @@ const VSCodeEditor = () => {
     const lines = code.split("\n");
     let insideString = false; // track if we are inside quotes
     return lines.map((line, lineIndex) => {
+      // keep whitespace tokens (your regex already does this)
       const tokens = line.split(/(\s+|[{}[\]();,.:"])/);
+  
       return (
         <div key={lineIndex} style={{ display: "flex", minHeight: "20px" }}>
           <span
@@ -116,14 +118,20 @@ const VSCodeEditor = () => {
               textAlign: "right",
               fontSize: "14px",
               fontFamily: 'Consolas, Monaco, "Courier New", monospace',
+              whiteSpace: "pre", // preserve spaces for line numbers too
             }}
           >
             {lineIndex + 1}
           </span>
+  
+          {/* IMPORTANT: set whiteSpace: 'pre' here so spaces in tokens render */}
           <span
             style={{
               fontFamily: 'Consolas, Monaco, "Courier New", monospace',
               fontSize: "14px",
+              whiteSpace: "pre",
+              display: "block", // allow pre behavior across the whole code column
+              flex: 1,
             }}
           >
             {tokens.map((token, tokenIndex) => {
@@ -136,14 +144,13 @@ const VSCodeEditor = () => {
                   </span>
                 );
               }
-
+  
+              // render whitespace tokens as-is (whiteSpace: pre will keep them)
               return (
                 <span
                   key={tokenIndex}
                   style={{
-                    color: insideString
-                      ? "#E6DB74"
-                      : getTokenColor(token.trim()),
+                    color: insideString ? "#E6DB74" : getTokenColor(token.trim()),
                   }}
                 >
                   {token}
@@ -155,6 +162,7 @@ const VSCodeEditor = () => {
       );
     });
   };
+  
 
   return (
     <Paper
