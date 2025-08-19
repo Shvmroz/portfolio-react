@@ -223,31 +223,67 @@ const Dashboard = () => {
       {/* Quick Stats */}
       <div className="row g-3">
         <div className="col-12 col-md-4">
-          <Card sx={{ textAlign: 'center', p: 3 }}>
-            <Typography variant="h3" color="primary" sx={{ fontWeight: 'bold' }}>
+          <Card sx={{ 
+            textAlign: 'center', 
+            p: 3,
+            background: (theme) => theme.palette.mode === 'dark'
+              ? 'linear-gradient(135deg, #EB5E28 0%, #C04410 100%)'
+              : 'linear-gradient(135deg, #EB5E28 0%, #FF8A50 100%)',
+            color: 'white',
+            transition: 'all 0.3s ease',
+            '&:hover': {
+              transform: 'translateY(-4px)',
+              boxShadow: '0 8px 25px rgba(235, 94, 40, 0.3)',
+            }
+          }}>
+            <Typography variant="h3" sx={{ fontWeight: 'bold', color: 'white' }}>
               15+
             </Typography>
-            <Typography variant="body1" color="text.secondary">
+            <Typography variant="body1" sx={{ color: 'rgba(255,255,255,0.9)' }}>
               Projects Completed
             </Typography>
           </Card>
         </div>
         <div className="col-12 col-md-4">
-          <Card sx={{ textAlign: 'center', p: 3 }}>
-            <Typography variant="h3" color="success.main" sx={{ fontWeight: 'bold' }}>
+          <Card sx={{ 
+            textAlign: 'center', 
+            p: 3,
+            background: (theme) => theme.palette.mode === 'dark'
+              ? 'linear-gradient(135deg, #4CAF50 0%, #388E3C 100%)'
+              : 'linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%)',
+            color: 'white',
+            transition: 'all 0.3s ease',
+            '&:hover': {
+              transform: 'translateY(-4px)',
+              boxShadow: '0 8px 25px rgba(76, 175, 80, 0.3)',
+            }
+          }}>
+            <Typography variant="h3" sx={{ fontWeight: 'bold', color: 'white' }}>
               3+
             </Typography>
-            <Typography variant="body1" color="text.secondary">
+            <Typography variant="body1" sx={{ color: 'rgba(255,255,255,0.9)' }}>
               Years Experience
             </Typography>
           </Card>
         </div>
         <div className="col-12 col-md-4">
-          <Card sx={{ textAlign: 'center', p: 3 }}>
-            <Typography variant="h3" color="info.main" sx={{ fontWeight: 'bold' }}>
+          <Card sx={{ 
+            textAlign: 'center', 
+            p: 3,
+            background: (theme) => theme.palette.mode === 'dark'
+              ? 'linear-gradient(135deg, #3B82F6 0%, #1E40AF 100%)'
+              : 'linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%)',
+            color: 'white',
+            transition: 'all 0.3s ease',
+            '&:hover': {
+              transform: 'translateY(-4px)',
+              boxShadow: '0 8px 25px rgba(59, 130, 246, 0.3)',
+            }
+          }}>
+            <Typography variant="h3" sx={{ fontWeight: 'bold', color: 'white' }}>
               10+
             </Typography>
-            <Typography variant="body1" color="text.secondary">
+            <Typography variant="body1" sx={{ color: 'rgba(255,255,255,0.9)' }}>
               Technologies Mastered
             </Typography>
           </Card>
