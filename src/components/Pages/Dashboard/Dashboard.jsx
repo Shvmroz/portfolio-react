@@ -11,21 +11,23 @@ import {
 } from "@mui/material";
 import { Icon } from "@iconify/react";
 import VSCodeEditor from "./VSCodeEditor";
+import StatsCards from "./StatsCards";
 
 const SkillCard = ({ title, icon, level, color, description }) => (
-  <Card 
-    sx={{ 
-      height: '100%', 
-      background: (theme) => theme.palette.mode === 'dark' 
-        ? `linear-gradient(135deg, ${theme.palette[color].main}15 0%, ${theme.palette[color].main}08 100%)`
-        : `linear-gradient(135deg, ${theme.palette[color].main}12 0%, ${theme.palette[color].main}06 100%)`,
+  <Card
+    sx={{
+      height: "100%",
+      background: (theme) =>
+        theme.palette.mode === "dark"
+          ? `linear-gradient(135deg, ${theme.palette[color].main}15 0%, ${theme.palette[color].main}08 100%)`
+          : `linear-gradient(135deg, ${theme.palette[color].main}12 0%, ${theme.palette[color].main}06 100%)`,
       border: (theme) => `1px solid ${theme.palette[color].main}20`,
-      transition: 'all 0.3s ease',
-      '&:hover': {
-        transform: 'translateY(-4px)',
+      transition: "all 0.3s ease",
+      "&:hover": {
+        transform: "translateY(-4px)",
         boxShadow: (theme) => `0 8px 25px ${theme.palette[color].main}25`,
         border: (theme) => `1px solid ${theme.palette[color].main}40`,
-      }
+      },
     }}
   >
     <CardContent>
@@ -45,9 +47,10 @@ const SkillCard = ({ title, icon, level, color, description }) => (
             width: 50,
             height: 50,
             borderRadius: "50%",
-            background: (theme) => theme.palette.mode === 'dark'
-              ? `linear-gradient(135deg, ${theme.palette[color].main}25 0%, ${theme.palette[color].main}15 100%)`
-              : `linear-gradient(135deg, ${theme.palette[color].main}20 0%, ${theme.palette[color].main}10 100%)`,
+            background: (theme) =>
+              theme.palette.mode === "dark"
+                ? `linear-gradient(135deg, ${theme.palette[color].main}25 0%, ${theme.palette[color].main}15 100%)`
+                : `linear-gradient(135deg, ${theme.palette[color].main}20 0%, ${theme.palette[color].main}10 100%)`,
             color: `${color}.main`,
             border: (theme) => `2px solid ${theme.palette[color].main}30`,
           }}
@@ -58,9 +61,9 @@ const SkillCard = ({ title, icon, level, color, description }) => (
           label={level}
           sx={{
             backgroundColor: `${color}.main`,
-            color: 'white',
+            color: "white",
             fontWeight: 600,
-            fontSize: '0.75rem',
+            fontSize: "0.75rem",
           }}
           size="small"
         />
@@ -68,10 +71,10 @@ const SkillCard = ({ title, icon, level, color, description }) => (
       <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
         {title}
       </Typography>
-      <Typography 
-        variant="body2" 
-        sx={{ 
-          color: 'text.secondary',
+      <Typography
+        variant="body2"
+        sx={{
+          color: "text.secondary",
           lineHeight: 1.4,
         }}
       >
@@ -98,45 +101,47 @@ const Dashboard = () => {
       icon: <Icon icon="logos:react" width={24} height={24} />,
       level: "Expert",
       color: "info",
-      description: "Building dynamic UIs with hooks, context, and modern patterns"
+      description:
+        "Building dynamic UIs with hooks, context, and modern patterns",
     },
     {
       title: "Next.js",
       icon: <Icon icon="logos:nextjs-icon" width={24} height={24} />,
       level: "Advanced",
       color: "primary",
-      description: "Server-side rendering, API routes, and full-stack applications"
+      description:
+        "Server-side rendering, API routes, and full-stack applications",
     },
     {
       title: "Node.js",
       icon: <Icon icon="logos:nodejs-icon" width={24} height={24} />,
       level: "Advanced",
       color: "success",
-      description: "Backend development with Express.js and RESTful APIs"
+      description: "Backend development with Express.js and RESTful APIs",
     },
     {
       title: "Material-UI",
       icon: <Icon icon="logos:material-ui" width={24} height={24} />,
       level: "Expert",
       color: "info",
-      description: "Creating beautiful, responsive interfaces with MUI components"
+      description:
+        "Creating beautiful, responsive interfaces with MUI components",
     },
     {
       title: "Bootstrap",
       icon: <Icon icon="logos:bootstrap" width={24} height={24} />,
       level: "Expert",
       color: "secondary",
-      description: "Responsive design and rapid prototyping"
+      description: "Responsive design and rapid prototyping",
     },
     {
       title: "Tailwind CSS",
       icon: <Icon icon="logos:tailwindcss-icon" width={24} height={24} />,
       level: "Advanced",
       color: "info",
-      description: "Utility-first CSS framework for custom designs"
+      description: "Utility-first CSS framework for custom designs",
     },
   ];
-
 
   return (
     <Box sx={{ width: "100vw", maxWidth: "100%" }}>
@@ -154,57 +159,14 @@ const Dashboard = () => {
       </Box>
 
       {/* VSCode Editor */}
-      <Box sx={{ mb: 4 }}>
-        <VSCodeEditor />
-      </Box>
-
-      {/* Profile Section */}
-      <Card sx={{ mb: 4 }}>
-        <CardContent sx={{ p: 4 }}>
-          <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
-            <Avatar
-              sx={{
-                width: 120,
-                height: 120,
-                mr: 4,
-                background: 'linear-gradient(135deg, #EB5E28 0%, #C04410 100%)',
-                fontSize: '3rem',
-                fontWeight: 'bold'
-              }}
-            >
-              S
-            </Avatar>
-            <Box sx={{ flex: 1 }}>
-              <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
-                {profileData.name}
-              </Typography>
-              <Typography variant="h6" color="primary" sx={{ mb: 2 }}>
-                {profileData.title}
-              </Typography>
-              <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
-                {profileData.bio}
-              </Typography>
-              <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
-                <Chip
-                  icon={<Icon icon="material-symbols:location-on" />}
-                  label={profileData.location}
-                  variant="outlined"
-                />
-                <Chip
-                  icon={<Icon icon="material-symbols:work" />}
-                  label={profileData.experience}
-                  variant="outlined"
-                />
-                <Chip
-                  icon={<Icon icon="material-symbols:email" />}
-                  label={profileData.email}
-                  variant="outlined"
-                />
-              </Box>
-            </Box>
-          </Box>
-        </CardContent>
-      </Card>
+      <div className="row ">
+        <div className="col-12 col-lg-8 mb-4 mb-lg-0">
+          <VSCodeEditor />
+        </div>
+        <div className="col-12 col-lg-4">
+          <StatsCards />
+        </div>
+      </div>
 
       {/* Skills Section */}
       <Paper sx={{ p: 3, mb: 4 }}>
@@ -219,77 +181,6 @@ const Dashboard = () => {
           ))}
         </div>
       </Paper>
-
-      {/* Quick Stats */}
-      <div className="row g-3">
-        <div className="col-12 col-md-4">
-          <Card sx={{ 
-            textAlign: 'center', 
-            p: 3,
-            background: (theme) => theme.palette.mode === 'dark'
-              ? 'linear-gradient(135deg, #EB5E28 0%, #C04410 100%)'
-              : 'linear-gradient(135deg, #EB5E28 0%, #FF8A50 100%)',
-            color: 'white',
-            transition: 'all 0.3s ease',
-            '&:hover': {
-              transform: 'translateY(-4px)',
-              boxShadow: '0 8px 25px rgba(235, 94, 40, 0.3)',
-            }
-          }}>
-            <Typography variant="h3" sx={{ fontWeight: 'bold', color: 'white' }}>
-              15+
-            </Typography>
-            <Typography variant="body1" sx={{ color: 'rgba(255,255,255,0.9)' }}>
-              Projects Completed
-            </Typography>
-          </Card>
-        </div>
-        <div className="col-12 col-md-4">
-          <Card sx={{ 
-            textAlign: 'center', 
-            p: 3,
-            background: (theme) => theme.palette.mode === 'dark'
-              ? 'linear-gradient(135deg, #4CAF50 0%, #388E3C 100%)'
-              : 'linear-gradient(135deg, #4CAF50 0%, #66BB6A 100%)',
-            color: 'white',
-            transition: 'all 0.3s ease',
-            '&:hover': {
-              transform: 'translateY(-4px)',
-              boxShadow: '0 8px 25px rgba(76, 175, 80, 0.3)',
-            }
-          }}>
-            <Typography variant="h3" sx={{ fontWeight: 'bold', color: 'white' }}>
-              3+
-            </Typography>
-            <Typography variant="body1" sx={{ color: 'rgba(255,255,255,0.9)' }}>
-              Years Experience
-            </Typography>
-          </Card>
-        </div>
-        <div className="col-12 col-md-4">
-          <Card sx={{ 
-            textAlign: 'center', 
-            p: 3,
-            background: (theme) => theme.palette.mode === 'dark'
-              ? 'linear-gradient(135deg, #3B82F6 0%, #1E40AF 100%)'
-              : 'linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%)',
-            color: 'white',
-            transition: 'all 0.3s ease',
-            '&:hover': {
-              transform: 'translateY(-4px)',
-              boxShadow: '0 8px 25px rgba(59, 130, 246, 0.3)',
-            }
-          }}>
-            <Typography variant="h3" sx={{ fontWeight: 'bold', color: 'white' }}>
-              10+
-            </Typography>
-            <Typography variant="body1" sx={{ color: 'rgba(255,255,255,0.9)' }}>
-              Technologies Mastered
-            </Typography>
-          </Card>
-        </div>
-      </div>
-
     </Box>
   );
 };

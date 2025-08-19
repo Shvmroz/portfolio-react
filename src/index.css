@@ -92,3 +92,63 @@ body {
 .gradient-bg {
   background: linear-gradient(135deg, rgb(230, 134, 45) 0%, rgb(228, 72, 55) 100%) !important;
 }
+
+.projects {
+  background: linear-gradient(135deg, #ffead7, #FFC89E) !important; /* Peach */
+  box-shadow: 0 8px 25px rgba(255, 170, 120, 0.1) !important;
+  color: #EB5E28 !important;
+}
+
+.experience {
+  background: linear-gradient(135deg, #efffe6, #A8E6A2) !important; /* Green Apple */
+  box-shadow: 0 8px 25px rgba(100, 200, 120, 0.1) !important;
+  color: #2E7D32 !important; /* green label/number for contrast */
+}
+
+.technologies {
+  background: linear-gradient(135deg, #eaeafd, #D6CCF5) !important; /* Purple */
+  box-shadow: 0 8px 25px rgba(150, 130, 250, 0.1) !important;
+  color: #6A1B9A !important; /* purple label/number */
+}
+
+/* Base Card */
+.stat-card {
+  position: relative !important;
+  overflow: hidden !important;
+  padding: 24px !important;
+  text-align: left !important; 
+  padding-right: 96px !important;    
+  transition: all 0.3s ease !important;
+  cursor: default !important;
+  margin-bottom: 24px !important;
+}
+
+/* Background Icon */
+.stat-bg-icon {
+  position: absolute !important;
+  right: 12px !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  margin: auto !important;
+  height: 100% !important;
+  width: auto !important;
+  opacity: 0.2 !important;
+  z-index: 1 !important;
+  pointer-events: none !important;
+  display: block !important;
+  line-height: 0 !important;
+}
+
+/* Number and Label */
+.stat-number {
+  font-weight: bold !important;
+}
+.stat-label {
+  opacity: 0.8 !important;
+}
+
+/* Hover Lift */
+.stat-card:hover {
+  transform: translateY(-4px) !important;
+}
+

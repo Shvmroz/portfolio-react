@@ -50,24 +50,24 @@ const Sidebar = ({ mobileOpen, handleDrawerToggle }) => {
       {/* Header */}
       <Box sx={{ p: 3, borderBottom: "1px solid #e0e0e0" }}>
         <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Avatar 
-            sx={{ 
-              width: 60, 
-              height: 60, 
+          <Avatar
+            sx={{
+              width: 40,
+              height: 40,
               mr: 2,
-              background: 'linear-gradient(135deg, #EB5E28 0%, #C04410 100%)'
+              background: "linear-gradient(135deg, #EB5E28 0%, #C04410 100%)",
             }}
-          >
-            <Typography variant="h4" sx={{ color: 'white', fontWeight: 'bold' }}>
-              S
-            </Typography>
-          </Avatar>
+          ></Avatar>
           <Box>
-            <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-              Muhammad Shamroz Khan
+            <Typography
+              className="text-uppercase"
+              variant="subtitle1"
+              sx={{ fontWeight: 600, color: "primary.main" }}
+            >
+              Shamroz Khan
             </Typography>
             <Typography variant="caption" sx={{ opacity: 0.8 }}>
-              Full Stack Developer
+              Frontend Developer
             </Typography>
           </Box>
         </Box>
@@ -83,19 +83,26 @@ const Sidebar = ({ mobileOpen, handleDrawerToggle }) => {
               sx={{
                 borderRadius: 2,
                 "&.Mui-selected": {
-                  backgroundColor: (theme) => theme.palette.mode === 'dark' ? "primary.main" : "secondary.main",
+                  backgroundColor: (theme) =>
+                    theme.palette.mode === "dark"
+                      ? "primary.main"
+                      : "secondary.main",
                   color: "white",
                   "&:hover": {
-                    backgroundColor: (theme) => theme.palette.mode === 'dark' ? "primary.dark" : "secondary.dark",
+                    backgroundColor: (theme) =>
+                      theme.palette.mode === "dark"
+                        ? "primary.dark"
+                        : "secondary.dark",
                   },
                   "& .MuiListItemIcon-root": {
                     color: "white",
                   },
                 },
                 "&:hover": {
-                  backgroundColor: (theme) => theme.palette.mode === 'dark' 
-                    ? "primary.main" 
-                    : "secondary.light",
+                  backgroundColor: (theme) =>
+                    theme.palette.mode === "dark"
+                      ? "primary.main"
+                      : "secondary.light",
                   color: "white",
                   "& .MuiListItemIcon-root": {
                     color: "white",

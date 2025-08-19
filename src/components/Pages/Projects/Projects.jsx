@@ -14,32 +14,18 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  Menu,
   CardActions,
 } from "@mui/material";
 import { Icon } from "@iconify/react";
 import { projects as initialProjects, techStacks } from "../../../data/portfolioData";
-import ProjectDialog from "./ProjectDialog";
-import { useSnackbar } from "notistack";
-import ConfirmDialog from "../../Extra/ConfirmDialog";
+
 
 const Projects = () => {
   const [projects, setProjects] = useState(initialProjects);
   const [searchTerm, setSearchTerm] = useState("");
   const [techFilter, setTechFilter] = useState("all");
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [editingProject, setEditingProject] = useState(null);
 
-  // Confirm delete dialog states
-  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
-  const [deletingProjectId, setDeletingProjectId] = useState(null);
-  const [deleteLoading, setDeleteLoading] = useState(false);
 
-  // Menu state for each project card
-  const [menuAnchorEl, setMenuAnchorEl] = useState(null);
-  const [menuProjectId, setMenuProjectId] = useState(null);
-
-  const { enqueueSnackbar } = useSnackbar();
 
   const filteredProjects = projects.filter((project) => {
     const matchesSearch =
@@ -50,73 +36,8 @@ const Projects = () => {
     return matchesSearch && matchesTech;
   });
 
-  const handleAddProject = () => {
-    setEditingProject(null);
-    setDialogOpen(true);
-  };
 
-  const handleEditProject = (project) => {
-    setEditingProject(project);
-    setDialogOpen(true);
-    handleMenuClose();
-  };
 
-  const handleMenuOpen = (event, projectId) => {
-    setMenuAnchorEl(event.currentTarget);
-    setMenuProjectId(projectId);
-  };
-
-  const handleMenuClose = () => {
-    setMenuAnchorEl(null);
-    setMenuProjectId(null);
-  };
-
-  const openConfirmDelete = (projectId) => {
-    setDeletingProjectId(projectId);
-    setConfirmDeleteOpen(true);
-    handleMenuClose();
-  };
-
-  const closeConfirmDelete = () => {
-    setDeletingProjectId(null);
-    setConfirmDeleteOpen(false);
-  };
-
-  const handleDeleteProject = async (projectId) => {
-    setDeleteLoading(true);
-    try {
-      await new Promise((r) => setTimeout(r, 500));
-      setProjects(projects.filter((p) => p.id !== projectId));
-      enqueueSnackbar("Project deleted successfully", { variant: "success" });
-    } catch (error) {
-      enqueueSnackbar("Failed to delete project", { variant: "error" });
-    } finally {
-      setDeleteLoading(false);
-      closeConfirmDelete();
-    }
-  };
-
-  const handleSaveProject = (projectData) => {
-    if (editingProject) {
-      setProjects(
-        projects.map((p) =>
-          p.id === editingProject.id
-            ? { ...projectData, id: editingProject.id }
-            : p
-        )
-      );
-      enqueueSnackbar("Project updated successfully", { variant: "success" });
-    } else {
-      const newProject = {
-        ...projectData,
-        id: Math.max(...projects.map((p) => p.id)) + 1,
-        createdAt: new Date().toISOString().split("T")[0],
-      };
-      setProjects([newProject, ...projects]);
-      enqueueSnackbar("Project added successfully", { variant: "success" });
-    }
-    setDialogOpen(false);
-  };
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -266,25 +187,6 @@ const Projects = () => {
                   )}
                 </Box>
 
-                <IconButton
-                  sx={{
-                    position: "absolute",
-                    top: 8,
-                    right: 8,
-                    zIndex: 1,
-                    color: "#403D39",
-                    backgroundColor: "#d3d3d37a",
-                    display: 'none'
-                  }}
-                  aria-controls={
-                    menuProjectId === project.id ? "project-menu" : undefined
-                  }
-                  aria-haspopup="true"
-                  onClick={(e) => handleMenuOpen(e, project.id)}
-                  size="small"
-                >
-                  <Icon icon="material-symbols:more-vert" />
-                </IconButton>
               </CardContent>
 
               <CardActions sx={{ justifyContent: "space-between", px: 2, pb: 2 }}>
@@ -315,48 +217,6 @@ const Projects = () => {
           </div>
         ))}
       </div>
-
-      {/* Menu for edit/delete */}
-      <Menu
-        id="project-menu"
-        anchorEl={menuAnchorEl}
-        open={Boolean(menuAnchorEl)}
-        onClose={handleMenuClose}
-      >
-        <MenuItem
-          onClick={() => {
-            const project = projects.find((p) => p.id === menuProjectId);
-            if (project) handleEditProject(project);
-          }}
-        >
-          <Icon icon="material-symbols:edit" style={{ marginRight: 8 }} />
-          Edit
-        </MenuItem>
-        <MenuItem onClick={() => openConfirmDelete(menuProjectId)}>
-          <Icon icon="material-symbols:delete" style={{ marginRight: 8 }} />
-          Delete
-        </MenuItem>
-      </Menu>
-
-      {/* Confirm Delete Dialog */}
-      <ConfirmDialog
-        open={confirmDeleteOpen}
-        onClose={closeConfirmDelete}
-        onConfirm={() => handleDeleteProject(deletingProjectId)}
-        title="Delete Project?"
-        description="Are you sure you want to delete this project? This action cannot be undone."
-        confirmText="Delete"
-        cancelText="Cancel"
-        loading={deleteLoading}
-      />
-
-      {/* Project Add/Edit Dialog */}
-      <ProjectDialog
-        open={dialogOpen}
-        onClose={() => setDialogOpen(false)}
-        onSave={handleSaveProject}
-        project={editingProject}
-      />
     </Box>
   );
 };
