@@ -1,4 +1,4 @@
-import { Card, Typography } from "@mui/material";
+import { Card, Paper, Typography } from "@mui/material";
 import { Icon } from "@iconify/react";
 
 const statsData = [
@@ -30,7 +30,7 @@ export default function StatsCards() {
    <>
    {statsData.map((item) => (
         <div key={item.id}>
-          <Card className={`stat-card ${item.className}`}>
+          <Paper sx={{borderRadius: "8px"}} className={`stat-card ${item.className}`}>
             <div className="stat-content">
               <Typography variant="h4" className="stat-number">
                 {item.number}
@@ -40,7 +40,7 @@ export default function StatsCards() {
               </Typography>
             </div>
             <Icon icon={item.icon} className="stat-bg-icon" />
-          </Card>
+          </Paper>
         </div>
       ))}
    </>

@@ -14,21 +14,23 @@ import VSCodeEditor from "./VSCodeEditor";
 import StatsCards from "./StatsCards";
 
 const SkillCard = ({ title, icon, level, color, description }) => (
-  <Card
-    sx={{
-      height: "100%",
-      background: (theme) =>
-        theme.palette.mode === "dark"
-          ? `linear-gradient(135deg, ${theme.palette[color].main}15 0%, ${theme.palette[color].main}08 100%)`
-          : `linear-gradient(135deg, ${theme.palette[color].main}12 0%, ${theme.palette[color].main}06 100%)`,
-      border: (theme) => `1px solid ${theme.palette[color].main}20`,
-      transition: "all 0.3s ease",
-      "&:hover": {
-        transform: "translateY(-4px)",
-        boxShadow: (theme) => `0 8px 25px ${theme.palette[color].main}25`,
-        border: (theme) => `1px solid ${theme.palette[color].main}40`,
-      },
-    }}
+  <Box
+  sx={{
+    height: "100%",
+    borderRadius: "8px", // set here
+    background: (theme) =>
+      theme.palette.mode === "dark"
+        ? `linear-gradient(135deg, ${theme.palette[color].main}15 0%, ${theme.palette[color].main}08 100%)`
+        : `linear-gradient(135deg, ${theme.palette[color].main}12 0%, ${theme.palette[color].main}06 100%)`,
+    border: (theme) => `1px solid ${theme.palette[color].main}20`,
+    transition: "all 0.3s ease",
+    "&:hover": {
+      transform: "translateY(-4px)",
+      // boxShadow: (theme) => `0 8px 25px ${theme.palette[color].main}25`,
+      border: (theme) => `1px solid ${theme.palette[color].main}40`,
+    },
+  }}
+  
   >
     <CardContent>
       <Box
@@ -81,7 +83,7 @@ const SkillCard = ({ title, icon, level, color, description }) => (
         {description}
       </Typography>
     </CardContent>
-  </Card>
+  </Box>
 );
 
 const Dashboard = () => {
