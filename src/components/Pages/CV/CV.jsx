@@ -189,7 +189,7 @@ const CV = () => {
 
               <ListItem>
                 <ListItemIcon>
-                  <Icon icon="line-md:phone" width={18} />
+                  <Icon icon="si:phone-duotone" width={18} />
                 </ListItemIcon>
                 <ListItemText primary={cvData.personalInfo.phone} />
               </ListItem>
