@@ -94,22 +94,45 @@ body {
 }
 
 .projects {
-  background: linear-gradient(135deg, #ffead7, #FFC89E) !important; /* Peach */
-  box-shadow: 0 8px 25px rgba(255, 170, 120, 0.1) !important;
-  color: #EB5E28 !important;
+  background: linear-gradient(135deg, rgba(235, 94, 40, 0.35) 0%, rgba(235, 94, 40, 0.2) 100%) !important;
+  border: 1px solid rgba(235, 94, 40, 0.4) !important;
+  box-shadow: 0 8px 25px rgba(235, 94, 40, 0.2) !important;
+  color: #fa520f !important;
+  border-radius: 8px !important;
+  transition: all 0.3s ease !important;
+}
+
+.projects:hover {
+  border-color: rgb(255, 72, 0) !important;
 }
 
 .experience {
-  background: linear-gradient(135deg, #efffe6, #A8E6A2) !important; /* Green Apple */
-  box-shadow: 0 8px 25px rgba(100, 200, 120, 0.1) !important;
-  color: #2E7D32 !important; /* green label/number for contrast */
+  background: linear-gradient(135deg, rgba(46, 125, 50, 0.35) 0%, rgba(46, 125, 50, 0.2) 100%) !important;
+  border: 1px solid rgba(46, 125, 50, 0.4) !important;
+  box-shadow: 0 8px 25px rgba(46, 125, 50, 0.2) !important;
+  color: #14c01d !important;
+  border-radius: 8px !important;
+  transition: all 0.3s ease !important;
+}
+
+.experience:hover {
+  border-color: rgba(0, 255, 13, 0.6) !important;
 }
 
 .technologies {
-  background: linear-gradient(135deg, #eaeafd, #D6CCF5) !important; /* Purple */
-  box-shadow: 0 8px 25px rgba(150, 130, 250, 0.1) !important;
-  color: #6A1B9A !important; /* purple label/number */
+  background: linear-gradient(135deg, rgba(106, 27, 154, 0.35) 0%, rgba(106, 27, 154, 0.2) 100%) !important;
+  border: 1px solid rgba(106, 27, 154, 0.4) !important;
+  box-shadow: 0 8px 25px rgba(106, 27, 154, 0.2) !important;
+  color: #9b23e6 !important;
+  border-radius: 8px !important;
+  transition: all 0.3s ease !important;
 }
+
+.technologies:hover {
+  border-color: rgba(157, 0, 255, 0.6) !important;
+}
+
+
 
 /* Base Card */
 .stat-card {
