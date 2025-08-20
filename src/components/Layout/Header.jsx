@@ -75,11 +75,8 @@ const Header = ({ handleDrawerToggle }) => {
             px: 1.2,
             py: 0.5,
             borderRadius: "8px",
-            backgroundColor: isDarkMode
-              ? "#323232"
-              : "#ffffff",
-              zIndex: 1,
-
+            backgroundColor: isDarkMode ? "#323232" : "#ffffff",
+            zIndex: 1,
           }}
         >
           <Icon icon="material-symbols:menu" />
@@ -94,17 +91,16 @@ const Header = ({ handleDrawerToggle }) => {
         >
           <Typography
             noWrap
+            className="welcome-text"
             sx={{
               fontWeight: 600,
               color: isDarkMode ? "#ffffff" : "#2D2D30",
-              backgroundColor: isDarkMode
-                ? "#323232"
-                : "#ffffff",
+              backgroundColor: isDarkMode ? "#323232" : "#ffffff",
               maxWidth: "max-content",
               zIndex: 1,
             }}
           >
-            👋 Welcome! Good to see you
+            <span className="wave fs-4 me-1">👋</span> Welcome! Good to see you
           </Typography>
 
           <Box
@@ -115,10 +111,8 @@ const Header = ({ handleDrawerToggle }) => {
               px: 1.2,
               py: 0.5,
               borderRadius: "8px",
-              backgroundColor: isDarkMode
-                ? "#323232"
-                : "#ffffff",
-                zIndex: 1,
+              backgroundColor: isDarkMode ? "#323232" : "#ffffff",
+              zIndex: 1,
             }}
           >
             <Tooltip
@@ -126,7 +120,11 @@ const Header = ({ handleDrawerToggle }) => {
               arrow
             >
               <Icon
-                icon={isDarkMode ? "emojione-monotone:light-bulb" : "emojione:light-bulb"}
+                icon={
+                  isDarkMode
+                    ? "emojione-monotone:light-bulb"
+                    : "emojione:light-bulb"
+                }
                 width={32}
                 height={32}
                 style={{
