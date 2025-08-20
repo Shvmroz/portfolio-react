@@ -278,11 +278,6 @@ const CV = () => {
           {cvData.experience.map((exp) => (
             <Box key={exp.id} sx={{ mb: 2 }}>
               <Stack direction="row" spacing={2} alignItems="center">
-                <Avatar
-                  alt={exp.companyName}
-                  variant="rounded"
-                  sx={{ width: 48, height: 48 }}
-                />
                 <Box>
                   <Typography sx={{ fontWeight: 700 }}>
                     {exp.companyName}
@@ -293,7 +288,7 @@ const CV = () => {
                 </Box>
               </Stack>
 
-              <Box sx={{ ml: 7, mt: 1 }}>
+              <Box sx={{ mt: 1 }}>
                 <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
                   {exp.role}
                 </Typography>
@@ -332,10 +327,6 @@ const CV = () => {
           {cvData.education.map((edu) => (
             <Box key={edu.id} sx={{ mb: 2 }}>
               <Stack direction="row" spacing={2} alignItems="center">
-                <Avatar
-                  variant="rounded"
-                  sx={{ width: 48, height: 48 }}
-                />
                 <Box>
                   <Typography sx={{ fontWeight: 700 }}>
                     {edu.institution}
@@ -346,7 +337,7 @@ const CV = () => {
                 </Box>
               </Stack>
 
-              <Box sx={{ ml: 7, mt: 1 }}>
+              <Box sx={{ mt: 1 }}>
                 <Typography variant="caption" color="text.secondary">
                   {edu.period} • {edu.extra}
                 </Typography>
