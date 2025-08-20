@@ -22,8 +22,8 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import myImage from "../../../assets/1752006032367.png";
 import GCUF from "../../../assets/GCUF.jpeg";
-import med_tronix from "../../../assets/medtronix.jpeg";
-import meta_logix from "../../../assets/metalogix.jpeg";
+import med_tronix from "../../../assets/med_tronix.JPEG";
+import meta_logix from "../../../assets/meta_logix.JPEG";
 
 const CV = () => {
   const cvRef = useRef(null);
