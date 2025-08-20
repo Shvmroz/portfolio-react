@@ -22,7 +22,7 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import myImage from "../../../assets/1752006032367.png";
 import GCUF from "../../../assets/GCUF.jpeg";
-import med_tronix from "../../../assets/med_tronix.JPEG";
+// import med_tronix from "../../../assets/med_tronix.JPEG";
 import meta_logix from "../../../assets/meta_logix.JPEG";
 
 const CV = () => {
@@ -45,22 +45,26 @@ const CV = () => {
       {
         id: 1,
         companyName: "Meta Logix Tech",
-        role: "React Developer",
+        role: "React js Developer",
         type: "Internship",
         period: "Oct 2024 - Present · 11 mos",
         location: "Sahiwal Division, Punjab, Pakistan",
-        tags: ["React.js", "Next.js", "Material-UI", "Bootstrap", "Tailwind CSS"],
-        companyLogo: meta_logix,
+        tags: [
+          "React.js",
+          "Next.js",
+          "Material-UI",
+          "Bootstrap",
+          "Tailwind CSS",
+        ],
       },
       {
         id: 2,
         companyName: "Medtronix Systems",
-        role: "React Developer",
+        role: "React js Developer",
         type: "Part-time",
         period: "May 2024 - Aug 2024 · 4 mos",
         location: "Sahiwal Division, Punjab, Pakistan · On-site",
         tags: ["React.js"],
-        companyLogo: med_tronix,
       },
     ],
     education: [
@@ -278,7 +282,11 @@ const CV = () => {
           {cvData.experience.map((exp) => (
             <Box key={exp.id} sx={{ mb: 2 }}>
               <Stack direction="row" spacing={2} alignItems="center">
-                <Avatar src={exp.companyLogo} variant="rounded" sx={{ width: 48, height: 48 }} />
+                <Avatar
+                  alt={exp.companyName}
+                  variant="rounded"
+                  sx={{ width: 48, height: 48 }}
+                />
                 <Box>
                   <Typography sx={{ fontWeight: 700 }}>
                     {exp.companyName}
@@ -328,7 +336,11 @@ const CV = () => {
           {cvData.education.map((edu) => (
             <Box key={edu.id} sx={{ mb: 2 }}>
               <Stack direction="row" spacing={2} alignItems="center">
-                <Avatar src={edu.logo} variant="rounded" sx={{ width: 48, height: 48 }} />
+                <Avatar
+                  src={edu.logo}
+                  variant="rounded"
+                  sx={{ width: 48, height: 48 }}
+                />
                 <Box>
                   <Typography sx={{ fontWeight: 700 }}>
                     {edu.institution}
