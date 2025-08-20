@@ -23,7 +23,7 @@ import html2canvas from "html2canvas";
 import myImage from "../../../assets/1752006032367.png";
 import GCUF from "../../../assets/GCUF.jpeg";
 import medtronix from "../../../assets/medtronix.jpeg";
-import metalogix from "../../../assets/metaLogix.jpeg";
+import metalogix from "../../../assets/metalogix.jpeg";
 
 const CV = () => {
   const cvRef = useRef(null);
