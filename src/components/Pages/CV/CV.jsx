@@ -21,9 +21,6 @@ import { useSnackbar } from "notistack";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import myImage from "../../../assets/1752006032367.png";
-import GCUF from "../../../assets/GCUF.jpeg";
-// import med_tronix from "../../../assets/med_tronix.JPEG";
-import meta_logix from "../../../assets/meta_logix.JPEG";
 
 const CV = () => {
   const cvRef = useRef(null);
@@ -74,7 +71,6 @@ const CV = () => {
         degree: "Master's degree, Computer Science",
         period: "Nov 2021 - Apr 2023",
         extra: "Grade: 3.4",
-        logo: GCUF,
       },
     ],
     skills: [
@@ -337,7 +333,6 @@ const CV = () => {
             <Box key={edu.id} sx={{ mb: 2 }}>
               <Stack direction="row" spacing={2} alignItems="center">
                 <Avatar
-                  src={edu.logo}
                   variant="rounded"
                   sx={{ width: 48, height: 48 }}
                 />
