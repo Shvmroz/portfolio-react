@@ -22,8 +22,8 @@ import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import myImage from "../../../assets/1752006032367.png";
 import GCUF from "../../../assets/GCUF.jpeg";
-import medtronix from "../../../assets/medtronix.jpeg";
-import metalogix from "../../../assets/metalogix.jpeg";
+import med_tronix from "../../../assets/medtronix.jpeg";
+import meta_logix from "../../../assets/metalogix.jpeg";
 
 const CV = () => {
   const cvRef = useRef(null);
@@ -50,7 +50,7 @@ const CV = () => {
         period: "Oct 2024 - Present · 11 mos",
         location: "Sahiwal Division, Punjab, Pakistan",
         tags: ["React.js", "Next.js", "Material-UI", "Bootstrap", "Tailwind CSS"],
-        companyLogo: metalogix,
+        companyLogo: meta_logix,
       },
       {
         id: 2,
@@ -60,7 +60,7 @@ const CV = () => {
         period: "May 2024 - Aug 2024 · 4 mos",
         location: "Sahiwal Division, Punjab, Pakistan · On-site",
         tags: ["React.js"],
-        companyLogo: medtronix,
+        companyLogo: med_tronix,
       },
     ],
     education: [
