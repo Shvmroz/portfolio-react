@@ -21,6 +21,9 @@ import { useSnackbar } from "notistack";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import myImage from "../../../assets/1752006032367.png";
+import GCUF from "../../../assets/GCUF.jpeg";
+import medtronix from "../../../assets/medtronix.jpeg";
+import metalogix from "../../../assets/metaLogix.jpeg";
 
 const CV = () => {
   const cvRef = useRef(null);
@@ -32,7 +35,7 @@ const CV = () => {
       title: "Web Application Developer",
       email: "shvmroz@gmail.com",
       phone: "+923066520002",
-      location: "Sahiwal Division, Punjab, Pakistan",
+      location: "Punjab, Pakistan",
       linkedin: "https://www.linkedin.com/in/shvmroz",
       github: "https://github.com/shvmroz",
     },
@@ -46,7 +49,8 @@ const CV = () => {
         type: "Internship",
         period: "Oct 2024 - Present · 11 mos",
         location: "Sahiwal Division, Punjab, Pakistan",
-        tags: ["React.js"],
+        tags: ["React.js", "Next.js", "Material-UI", "Bootstrap", "Tailwind CSS"],
+        companyLogo: metalogix,
       },
       {
         id: 2,
@@ -56,6 +60,7 @@ const CV = () => {
         period: "May 2024 - Aug 2024 · 4 mos",
         location: "Sahiwal Division, Punjab, Pakistan · On-site",
         tags: ["React.js"],
+        companyLogo: medtronix,
       },
     ],
     education: [
@@ -65,6 +70,7 @@ const CV = () => {
         degree: "Master's degree, Computer Science",
         period: "Nov 2021 - Apr 2023",
         extra: "Grade: 3.4",
+        logo: GCUF,
       },
     ],
     skills: [
@@ -72,8 +78,8 @@ const CV = () => {
       "Next.js",
       "Node.js",
       "JavaScript",
-      "TypeScript",
       "Material-UI",
+      "Bootstrap",
       "Tailwind CSS",
       "Git",
       "Netlify",
@@ -272,7 +278,7 @@ const CV = () => {
           {cvData.experience.map((exp) => (
             <Box key={exp.id} sx={{ mb: 2 }}>
               <Stack direction="row" spacing={2} alignItems="center">
-                <Avatar variant="rounded" sx={{ width: 48, height: 48 }} />
+                <Avatar src={exp.companyLogo} variant="rounded" sx={{ width: 48, height: 48 }} />
                 <Box>
                   <Typography sx={{ fontWeight: 700 }}>
                     {exp.companyName}
@@ -322,7 +328,7 @@ const CV = () => {
           {cvData.education.map((edu) => (
             <Box key={edu.id} sx={{ mb: 2 }}>
               <Stack direction="row" spacing={2} alignItems="center">
-                <Avatar variant="rounded" sx={{ width: 48, height: 48 }} />
+                <Avatar src={edu.logo} variant="rounded" sx={{ width: 48, height: 48 }} />
                 <Box>
                   <Typography sx={{ fontWeight: 700 }}>
                     {edu.institution}

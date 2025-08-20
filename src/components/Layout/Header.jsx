@@ -30,11 +30,11 @@ const Header = ({ handleDrawerToggle }) => {
       <Toolbar sx={{ position: "relative", overflow: "hidden" }}>
         {/* Galaxy stars across the navbar */}
         {Array.from({ length: 50 }).map((_, i) => {
-          const size = Math.random() * 4 + 1; // star size
+          const size = Math.random() * 4 + 2; // star size
           const top = Math.random() * 64; // AppBar height
           const delay = Math.random() * 5; // stagger start
           const duration = Math.random() * 40 + 30; // 3-8s speed
-          const color = isDarkMode ? "#FFFF00" : "#EB5E28";
+          const color = "#EB5E28";
 
           return (
             <Box
@@ -69,52 +69,73 @@ const Header = ({ handleDrawerToggle }) => {
           aria-label="open drawer"
           edge="start"
           onClick={handleDrawerToggle}
-          sx={{ mr: 2, display: { md: "none" } }}
+          sx={{
+            mr: 2,
+            display: { md: "none" },
+            px: 1.2,
+            py: 0.5,
+            borderRadius: "8px",
+            backgroundColor: isDarkMode
+              ? "#323232"
+              : "#ffffff",
+              zIndex: 1,
+
+          }}
         >
           <Icon icon="material-symbols:menu" />
         </IconButton>
-        <Typography
-          noWrap
-          component="div"
-          sx={{
-            flexGrow: 1,
-            fontSize: "1rem",
-            fontWeight: 600,
-            color: isDarkMode ? "#ffffff" : "#2D2D30",
-          }}
-        >
-          👋 Welcome! Good to see you
-        </Typography>
-
-        {/* Light/Dark Mode Bulb */}
         <Box
-          onClick={toggleTheme}
           sx={{
             display: "flex",
             alignItems: "center",
-            gap: 1,
-            cursor: "pointer",
-            userSelect: "none",
-            position: "relative",
+            justifyContent: "space-between",
+            width: "100%",
           }}
         >
-          <Tooltip
-            title={isDarkMode ? "Turn on Lights" : "Turn off Lights"}
-            arrow
+          <Typography
+            noWrap
+            sx={{
+              fontWeight: 600,
+              color: isDarkMode ? "#ffffff" : "#2D2D30",
+              backgroundColor: isDarkMode
+                ? "#323232"
+                : "#ffffff",
+              maxWidth: "max-content",
+              zIndex: 1,
+            }}
           >
-            <Icon
-              icon={isDarkMode ? "tabler:bulb" : "tabler:bulb-filled"}
-              width={32}
-              height={32}
-              style={{
-                color: isDarkMode ? "#AAAAAA" : "#FFBD2E",
-                textShadow: isDarkMode
-                  ? "none"
-                  : "0 0 4px #FFBD2E, 0 0 8px #FFBD2E, 0 0 12px #FFBD2E",
-                transition: "all 1s ease",
-              }}
-            />
-          </Tooltip>
+            👋 Welcome! Good to see you
+          </Typography>
+
+          <Box
+            onClick={toggleTheme}
+            sx={{
+              cursor: "pointer",
+              userSelect: "none",
+              px: 1.2,
+              py: 0.5,
+              borderRadius: "8px",
+              backgroundColor: isDarkMode
+                ? "#323232"
+                : "#ffffff",
+                zIndex: 1,
+            }}
+          >
+            <Tooltip
+              title={isDarkMode ? "Turn on Lights" : "Turn off Lights"}
+              arrow
+            >
+              <Icon
+                icon={isDarkMode ? "emojione-monotone:light-bulb" : "emojione:light-bulb"}
+                width={32}
+                height={32}
+                style={{
+                  color: isDarkMode ? "#AAAAAA" : "#ffa126",
+                  transition: "all 1s ease",
+                }}
+              />
+            </Tooltip>
+          </Box>
         </Box>
       </Toolbar>
 
