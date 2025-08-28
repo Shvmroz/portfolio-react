@@ -12,6 +12,7 @@ import {
 import { Icon } from "@iconify/react";
 import VSCodeEditor from "./VSCodeEditor";
 import StatsCards from "./StatsCards";
+import SnakeGame from "./SnakeGame";
 
 const SkillCard = ({ title, icon, level, color, description }) => (
   <Box
@@ -168,6 +169,9 @@ const Dashboard = () => {
         <div className="col-12 col-lg-4">
           <StatsCards />
         </div>
+      </div>
+      <div>
+        <SnakeGame/>
       </div>
 
       {/* Skills Section */}
