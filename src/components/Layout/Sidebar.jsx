@@ -11,12 +11,10 @@ import {
   Divider,
   Avatar,
   IconButton,
-  Fab,
 } from "@mui/material";
 import { Icon } from "@iconify/react";
 import { useNavigate, useLocation } from "react-router-dom";
 import myImage from "../../assets/1752006032367.png";
-
 const drawerWidth = 280;
 
 const menuItems = [
@@ -52,23 +50,6 @@ const Sidebar = ({ mobileOpen, handleDrawerToggle }) => {
     >
       {/* Header */}
       <Box sx={{ p: 3, borderBottom: "1px solid #e0e0e0" }}>
-        {/* Mobile menu button */}
-        <Box sx={{ display: { xs: "flex", md: "none" }, justifyContent: "flex-end", mb: 2 }}>
-          <Fab
-            size="small"
-            onClick={handleDrawerToggle}
-            sx={{
-              background: "linear-gradient(135deg, #EB5E28 0%, #C04410 100%)",
-              color: "white",
-              "&:hover": {
-                background: "linear-gradient(135deg, #C04410 0%, #A03308 100%)",
-              },
-            }}
-          >
-            <Icon icon="material-symbols:close" />
-          </Fab>
-        </Box>
-        
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <a href={myImage} target="_blank" rel="noopener noreferrer">
             <Avatar
