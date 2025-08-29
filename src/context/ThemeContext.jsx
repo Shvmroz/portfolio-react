@@ -59,7 +59,7 @@ const darkTheme = {
       contrastText: '#000000',
     },
     background: {
-      default: '#121212',
+      default: '#0A0A0A',
       header: '#1E1E1E',
       paper: '#1E1E1E',
       sidebar: '#1A1A1A',
