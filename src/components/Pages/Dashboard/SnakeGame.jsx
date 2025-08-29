@@ -10,12 +10,24 @@ export default function SnakeGame() {
   const [gameRunning, setGameRunning] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [score, setScore] = useState(0);
+  const [canvasSize, setCanvasSize] = useState(390);
+  useEffect(() => {
+    const updateSize = () => {
+      // clamp between 340 and 390
+      const size = Math.min(Math.max(window.innerWidth - 40, 340), 390);
+      setCanvasSize(size);
+    };
 
-  const canvasWidth = 390;
-  const canvasHeight = 390;
-  const gridSize = 23;
-  const tileCountX = Math.floor(canvasWidth / gridSize);
-  const tileCountY = Math.floor(canvasHeight / gridSize) - 1; // header row
+    updateSize();
+    window.addEventListener("resize", updateSize);
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
+
+  const canvasWidth = canvasSize;
+  const canvasHeight = canvasSize;
+  const gridSize = Math.floor(canvasSize / 15);
+  const tileCountX = Math.ceil(canvasWidth / gridSize);
+  const tileCountY = Math.ceil(canvasHeight / gridSize) - 1;
 
   const snakeRef = useRef([{ x: 5, y: 5 }]);
   const foodRef = useRef({ x: 10, y: 10, icon: "logos:react" });
@@ -27,16 +39,20 @@ export default function SnakeGame() {
   const { isDarkMode } = useThemeMode();
 
   const foodIcons = [
-    "skill-icons:react-dark",
+    "logos:react",
     "logos:flutter",
-    "logos:nextjs-icon",
+    "skill-icons:nextjs-dark",
     "devicon:dart",
     "skill-icons:javascript",
     "logos:android-icon",
     "logos:apple-app-store",
     "devicon:chrome",
     "logos:safari",
-    "noto:mobile-phone",
+    "fluent-emoji-flat:mobile-phone",
+    "skill-icons:html",
+    "logos:material-ui",
+    "logos:tailwindcss-icon",
+    "devicon:bootstrap",
   ];
 
   const handleStartGame = () => {
@@ -76,11 +92,11 @@ export default function SnakeGame() {
 
     const drawGame = () => {
       // Background
-      ctx.fillStyle = isDarkMode ? "#1E1E1E" : "#FFFCF2";
+      ctx.fillStyle = isDarkMode ? "#1e1400" : "#FFFCF2";
       ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
       // Header
-      ctx.fillStyle = isDarkMode ? "#374151" : "#EB5E28";
+      ctx.fillStyle = isDarkMode ? "#2D2D30" : "#EB5E28";
       ctx.fillRect(0, 0, canvasWidth, gridSize);
 
       // Score
@@ -88,21 +104,8 @@ export default function SnakeGame() {
       ctx.font = "bold 14px monospace";
       ctx.fillText(`Score: ${score}`, 5, 16);
 
-      // Pixel hearts
-      const heartCount = 3;
-      for (let i = 0; i < heartCount; i++) {
-        const x = canvasWidth - (i + 1) * (gridSize + 4);
-        const y = 4;
-        ctx.fillStyle = isDarkMode ? "red" : "#FF4D4D";
-        ctx.fillRect(x + 1, y, 3, 3);
-        ctx.fillRect(x + 5, y, 3, 3);
-        ctx.fillRect(x, y + 3, 7, 3);
-        ctx.fillRect(x + 1, y + 6, 5, 3);
-        ctx.fillRect(x + 3, y + 9, 3, 3);
-      }
-
       // Grid
-      ctx.strokeStyle = isDarkMode ? "#374151" : "#e2e8f0";
+      ctx.strokeStyle = isDarkMode ? "#382814" : "#ffe1d6";
       for (let i = 0; i <= tileCountX; i++) {
         ctx.beginPath();
         ctx.moveTo(i * gridSize, gridSize);
@@ -312,6 +315,24 @@ export default function SnakeGame() {
         height={canvasHeight}
         className="snake-canvas"
       />
+      {/* Hearts as Iconify icons */}
+      <div className="hearts-wrapper">
+        {[0, 1, 2].map((i) => (
+          <Icon
+            key={i}
+            icon="mdi:heart"
+            width={16}
+            height={16}
+            style={{
+              position: "absolute",
+              top: 4,
+              right: 4 + i * 20,
+              color: isDarkMode ? "#FF4D4D" : "#FFFCF2",
+              zIndex: 15,
+            }}
+          />
+        ))}
+      </div>
 
       {gameRunning && !gameOver && foodRef.current.icon && (
         <div

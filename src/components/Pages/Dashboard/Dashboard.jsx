@@ -147,19 +147,6 @@ const Dashboard = () => {
 
   return (
     <Box sx={{ width: "100vw", maxWidth: "100%" }}>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          mb: 3,
-        }}
-      >
-        <Typography variant="h4" sx={{ fontWeight: 600 }}>
-          Dashboard
-        </Typography>
-      </Box>
-
       {/* VSCode Editor */}
       <div className="row ">
         <div className="col-12 col-lg-8 mb-4 mb-lg-0">
