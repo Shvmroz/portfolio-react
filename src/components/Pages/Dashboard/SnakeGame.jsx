@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Icon } from "@iconify/react";
 import "./SnakeGame.css";
+import { useThemeMode } from "../../../context/ThemeContext";
 
 export default function SnakeGame() {
   const canvasRef = useRef(null);
@@ -10,15 +11,20 @@ export default function SnakeGame() {
   const [gameOver, setGameOver] = useState(false);
   const [score, setScore] = useState(0);
 
-  const gridSize = 20;
-  const tileCount = 20;
+  const canvasWidth = 390;
+  const canvasHeight = 390;
+  const gridSize = 23;
+  const tileCountX = Math.floor(canvasWidth / gridSize);
+  const tileCountY = Math.floor(canvasHeight / gridSize) - 1; // header row
 
-  const snakeRef = useRef([{ x: 10, y: 10 }]);
-  const foodRef = useRef({ x: 15, y: 15, icon: "logos:react" });
+  const snakeRef = useRef([{ x: 5, y: 5 }]);
+  const foodRef = useRef({ x: 10, y: 10, icon: "logos:react" });
   const dxRef = useRef(0);
   const dyRef = useRef(0);
   const lastMoveTimeRef = useRef(0);
   const moveInterval = 120;
+
+  const { isDarkMode } = useThemeMode();
 
   const foodIcons = [
     "skill-icons:react-dark",
@@ -37,12 +43,10 @@ export default function SnakeGame() {
     setScore(0);
     setGameOver(false);
     setGameRunning(true);
-
-    snakeRef.current = [{ x: 10, y: 10 }];
+    snakeRef.current = [{ x: 5, y: 5 }];
     dxRef.current = 1;
     dyRef.current = 0;
     lastMoveTimeRef.current = 0;
-
     generateFood();
   };
 
@@ -50,13 +54,13 @@ export default function SnakeGame() {
     let newFood;
     do {
       newFood = {
-        x: Math.floor(Math.random() * tileCount),
-        y: Math.floor(Math.random() * tileCount),
+        x: Math.floor(Math.random() * tileCountX),
+        y: Math.floor(Math.random() * tileCountY),
       };
-    } while (snakeRef.current.some((segment) => segment.x === newFood.x && segment.y === newFood.y));
-
-    const iconIndex = Math.floor(Math.random() * foodIcons.length);
-    newFood.icon = foodIcons[iconIndex];
+    } while (
+      snakeRef.current.some((seg) => seg.x === newFood.x && seg.y === newFood.y)
+    );
+    newFood.icon = foodIcons[Math.floor(Math.random() * foodIcons.length)];
     foodRef.current = newFood;
   };
 
@@ -71,109 +75,139 @@ export default function SnakeGame() {
     if (!ctx) return;
 
     const drawGame = () => {
-      const isDark = document.documentElement.classList.contains("dark");
-
       // Background
-      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-      if (isDark) {
-        gradient.addColorStop(0, "#170a28");
-        gradient.addColorStop(1, "#170a28");
-      } else {
-        gradient.addColorStop(0, "#f0f9ff");
-        gradient.addColorStop(1, "#FFF7ED");
-      }
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = isDarkMode ? "#1E1E1E" : "#FFFCF2";
+      ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
       // Header
-      ctx.fillStyle = isDark ? "#374151" : "#10b981";
-      ctx.fillRect(0, 0, canvas.width, gridSize);
+      ctx.fillStyle = isDarkMode ? "#374151" : "#EB5E28";
+      ctx.fillRect(0, 0, canvasWidth, gridSize);
 
       // Score
       ctx.fillStyle = "#f0f9ff";
       ctx.font = "bold 14px monospace";
-      ctx.fillText(`Score: ${score}`, 5, 14);
+      ctx.fillText(`Score: ${score}`, 5, 16);
 
       // Pixel hearts
       const heartCount = 3;
       for (let i = 0; i < heartCount; i++) {
-        const x = canvas.width - (i + 1) * (gridSize + 2);
+        const x = canvasWidth - (i + 1) * (gridSize + 4);
         const y = 4;
-        ctx.fillStyle = "red";
-        ctx.fillRect(x + 1, y, 2, 2);
-        ctx.fillRect(x + 4, y, 2, 2);
-        ctx.fillRect(x, y + 2, 6, 2);
-        ctx.fillRect(x + 1, y + 4, 4, 2);
-        ctx.fillRect(x + 2, y + 6, 2, 2);
+        ctx.fillStyle = isDarkMode ? "red" : "#FF4D4D";
+        ctx.fillRect(x + 1, y, 3, 3);
+        ctx.fillRect(x + 5, y, 3, 3);
+        ctx.fillRect(x, y + 3, 7, 3);
+        ctx.fillRect(x + 1, y + 6, 5, 3);
+        ctx.fillRect(x + 3, y + 9, 3, 3);
       }
 
       // Grid
-      ctx.strokeStyle = isDark ? "#374151" : "#e2e8f0";
-      for (let i = 0; i <= tileCount; i++) {
+      ctx.strokeStyle = isDarkMode ? "#374151" : "#e2e8f0";
+      for (let i = 0; i <= tileCountX; i++) {
         ctx.beginPath();
         ctx.moveTo(i * gridSize, gridSize);
-        ctx.lineTo(i * gridSize, canvas.height);
+        ctx.lineTo(i * gridSize, canvasHeight);
         ctx.stroke();
-
+      }
+      for (let i = 0; i <= tileCountY; i++) {
         ctx.beginPath();
         ctx.moveTo(0, i * gridSize + gridSize);
-        ctx.lineTo(canvas.width, i * gridSize + gridSize);
+        ctx.lineTo(canvasWidth, i * gridSize + gridSize);
         ctx.stroke();
       }
 
       // Snake
       if (!gameOver) {
-        snakeRef.current.forEach((segment, index) => {
-          ctx.fillStyle = index === 0 ? "#10b981" : "#34d399";
-          const radius = index === 0 ? 4 : 0; // rounded head
-          const xPos = segment.x * gridSize + 2;
-          const yPos = segment.y * gridSize + gridSize + 2;
+        snakeRef.current.forEach((seg, idx) => {
+          ctx.fillStyle = idx === 0 ? "#EB5E28" : "#e69776";
+          const radius = idx === 0 ? 4 : 0;
+          const xPos = seg.x * gridSize + 2;
+          const yPos = seg.y * gridSize + gridSize + 2;
 
           ctx.beginPath();
           ctx.moveTo(xPos + radius, yPos);
           ctx.lineTo(xPos + gridSize - 4 - radius, yPos);
-          ctx.quadraticCurveTo(xPos + gridSize - 4, yPos, xPos + gridSize - 4, yPos + radius);
+          ctx.quadraticCurveTo(
+            xPos + gridSize - 4,
+            yPos,
+            xPos + gridSize - 4,
+            yPos + radius
+          );
           ctx.lineTo(xPos + gridSize - 4, yPos + gridSize - 4 - radius);
-          ctx.quadraticCurveTo(xPos + gridSize - 4, yPos + gridSize - 4, xPos + gridSize - 4 - radius, yPos + gridSize - 4);
+          ctx.quadraticCurveTo(
+            xPos + gridSize - 4,
+            yPos + gridSize - 4,
+            xPos + gridSize - 4 - radius,
+            yPos + gridSize - 4
+          );
           ctx.lineTo(xPos + radius, yPos + gridSize - 4);
-          ctx.quadraticCurveTo(xPos, yPos + gridSize - 4, xPos, yPos + gridSize - 4 - radius);
+          ctx.quadraticCurveTo(
+            xPos,
+            yPos + gridSize - 4,
+            xPos,
+            yPos + gridSize - 4 - radius
+          );
           ctx.lineTo(xPos, yPos + radius);
           ctx.quadraticCurveTo(xPos, yPos, xPos + radius, yPos);
           ctx.fill();
 
-          // Eyes
-          if (index === 0) {
+          if (idx === 0) {
             ctx.fillStyle = "white";
             const eyeSize = 4;
-            const eyeOffsetX = dxRef.current === 0 ? 4 : dxRef.current === 1 ? 8 : dxRef.current === -1 ? 0 : 4;
-            const eyeOffsetY = dyRef.current === 0 ? 4 : dyRef.current === 1 ? 8 : dyRef.current === -1 ? 0 : 4;
+            const eyeOffsetX =
+              dxRef.current === 0
+                ? 4
+                : dxRef.current === 1
+                ? 8
+                : dxRef.current === -1
+                ? 0
+                : 4;
+            const eyeOffsetY =
+              dyRef.current === 0
+                ? 4
+                : dyRef.current === 1
+                ? 8
+                : dyRef.current === -1
+                ? 0
+                : 4;
 
             ctx.beginPath();
-            ctx.arc(xPos + 5 + eyeOffsetX, yPos + 5 + eyeOffsetY, eyeSize / 2, 0, Math.PI * 2);
+            ctx.arc(
+              xPos + 5 + eyeOffsetX,
+              yPos + 5 + eyeOffsetY,
+              eyeSize / 2,
+              0,
+              Math.PI * 2
+            );
             ctx.fill();
             ctx.beginPath();
-            ctx.arc(xPos + 11 + eyeOffsetX, yPos + 5 + eyeOffsetY, eyeSize / 2, 0, Math.PI * 2);
+            ctx.arc(
+              xPos + 11 + eyeOffsetX,
+              yPos + 5 + eyeOffsetY,
+              eyeSize / 2,
+              0,
+              Math.PI * 2
+            );
             ctx.fill();
           }
         });
       }
     };
 
-    const moveSnake = (currentTime) => {
-      if (!gameRunning || currentTime - lastMoveTimeRef.current < moveInterval) return;
-      lastMoveTimeRef.current = currentTime;
+    const moveSnake = (time) => {
+      if (!gameRunning || time - lastMoveTimeRef.current < moveInterval) return;
+      lastMoveTimeRef.current = time;
 
       const dx = dxRef.current;
       const dy = dyRef.current;
       if (dx === 0 && dy === 0) return;
 
       const head = {
-        x: (snakeRef.current[0].x + dx + tileCount) % tileCount,
-        y: (snakeRef.current[0].y + dy + tileCount) % tileCount,
+        x: (snakeRef.current[0].x + dx + tileCountX) % tileCountX,
+        y: (snakeRef.current[0].y + dy + tileCountY) % tileCountY,
       };
 
-      // Collision with self
-      if (snakeRef.current.some((seg) => seg.x === head.x && seg.y === head.y)) {
+      if (snakeRef.current.some((s) => s.x === head.x && s.y === head.y)) {
         setGameOver(true);
         setGameRunning(false);
         dxRef.current = 0;
@@ -183,74 +217,70 @@ export default function SnakeGame() {
 
       snakeRef.current.unshift(head);
 
-      // Eat food
       if (head.x === foodRef.current.x && head.y === foodRef.current.y) {
-        setScore((prev) => prev + 10);
+        setScore((s) => s + 10);
         generateFood();
-      } else {
-        snakeRef.current.pop();
-      }
+      } else snakeRef.current.pop();
     };
 
-    const handleMouseMove = (event) => {
+    const handleMouseMove = (e) => {
       if (!gameRunning || gameOver) return;
-
       const rect = canvas.getBoundingClientRect();
-      const mouseX = event.clientX - rect.left;
-      const mouseY = event.clientY - rect.top;
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
 
       const head = snakeRef.current[0];
-      const headPixelX = head.x * gridSize + gridSize / 2;
-      const headPixelY = head.y * gridSize + gridSize / 2;
+      const headX = head.x * gridSize + gridSize / 2;
+      const headY = head.y * gridSize + gridSize / 2;
 
-      const deltaX = mouseX - headPixelX;
-      const deltaY = mouseY - headPixelY;
+      const dx = mouseX - headX;
+      const dy = mouseY - headY;
 
-      if (Math.abs(deltaX) > Math.abs(deltaY)) {
-        const newDx = deltaX > 0 ? 1 : -1;
+      if (Math.abs(dx) > Math.abs(dy)) {
+        const ndx = dx > 0 ? 1 : -1;
         if (dxRef.current === 0) {
-          dxRef.current = newDx;
+          dxRef.current = ndx;
           dyRef.current = 0;
         }
       } else {
-        const newDy = deltaY > 0 ? 1 : -1;
+        const ndy = dy > 0 ? 1 : -1;
         if (dyRef.current === 0) {
           dxRef.current = 0;
-          dyRef.current = newDy;
+          dyRef.current = ndy;
         }
       }
     };
 
     const handleKeyDown = (e) => {
       if (!gameRunning || gameOver) return;
+      // Prevent arrow keys from scrolling the page
+      if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) {
+        e.preventDefault();
+      }
       switch (e.key) {
         case "ArrowUp":
           if (dyRef.current === 0) {
             dxRef.current = 0;
             dyRef.current = -1;
           }
-          e.preventDefault();
           break;
         case "ArrowDown":
           if (dyRef.current === 0) {
             dxRef.current = 0;
             dyRef.current = 1;
           }
-          e.preventDefault();
           break;
         case "ArrowLeft":
           if (dxRef.current === 0) {
             dxRef.current = -1;
             dyRef.current = 0;
           }
-          e.preventDefault();
           break;
         case "ArrowRight":
           if (dxRef.current === 0) {
             dxRef.current = 1;
             dyRef.current = 0;
           }
-          e.preventDefault();
           break;
       }
     };
@@ -258,60 +288,57 @@ export default function SnakeGame() {
     canvas.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("keydown", handleKeyDown);
 
-    const gameLoop = (time) => {
+    const loop = (time) => {
       moveSnake(time);
       drawGame();
-      requestAnimationFrame(gameLoop);
+      requestAnimationFrame(loop);
     };
-
-    requestAnimationFrame(gameLoop);
+    requestAnimationFrame(loop);
 
     return () => {
       canvas.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [gameRunning, gameOver, score]);
+  }, [gameRunning, gameOver, score, isDarkMode]);
 
   return (
-    <>
-      <div className="canvas-wrapper">
-        <canvas
-          ref={canvasRef}
-          width={400}
-          height={420}
-          className="snake-canvas"
-        />
+    <div
+      className="canvas-wrapper"
+      style={{ width: canvasWidth, height: canvasHeight }}
+    >
+      <canvas
+        ref={canvasRef}
+        width={canvasWidth}
+        height={canvasHeight}
+        className="snake-canvas"
+      />
 
-        {gameRunning && !gameOver && foodRef.current.icon && (
-          <div
-            className="food-icon"
-            style={{
-              left: foodRef.current.x * gridSize,
-              top: foodRef.current.y * gridSize + gridSize,
-            }}
-          >
-            <Icon icon={foodRef.current.icon} width={gridSize - 4} height={gridSize - 4} />
+      {gameRunning && !gameOver && foodRef.current.icon && (
+        <div
+          className="food-icon"
+          style={{
+            left: foodRef.current.x * gridSize,
+            top: foodRef.current.y * gridSize + gridSize,
+          }}
+        >
+          <Icon
+            icon={foodRef.current.icon}
+            width={gridSize - 4}
+            height={gridSize - 4}
+          />
+        </div>
+      )}
+
+      {gameOver && (
+        <div className="game-overlay">
+          <div className="game-overlay-content">
+            <div className="game-instructions">Game Over</div>
+            <button onClick={handleStartGame} className="restart-button">
+              Restart
+            </button>
           </div>
-        )}
-
-        {gameOver && (
-          <div className="game-overlay">
-            <div className="game-overlay-content">
-              <div className="game-instructions">
-                <p>Move your cursor or use arrow keys to control the snake</p>
-                <p className="small-text">Eat tech icons to grow • Snake wraps around edges</p>
-              </div>
-
-              <button
-                onClick={handleStartGame}
-                className="restart-button"
-              >
-                Restart
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
-    </>
+        </div>
+      )}
+    </div>
   );
 }

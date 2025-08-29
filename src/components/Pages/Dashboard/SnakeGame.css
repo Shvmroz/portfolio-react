@@ -61,14 +61,11 @@
     background-color: #374151;
   }
   
-  .game-instructions {
+  .game-instructions  {
     margin-bottom: 20px;
-  }
-  
-  .game-instructions p {
-    margin: 0 0 8px 0;
     color: #4b5563;
-    font-size: 14px;
+    font-size: 16px;
+    font-weight: 700 ;
   }
   
   .dark .game-instructions p {
@@ -85,7 +82,7 @@
   }
   
   .restart-button {
-    background: linear-gradient(to right, #2563eb, #059669);
+    background: linear-gradient(to right, #EB5E28, #C04410);
     color: white;
     border: none;
     padding: 8px 24px;
@@ -97,8 +94,7 @@
   }
   
   .restart-button:hover {
-    background: linear-gradient(to right, #1d4ed8, #047857);
-    transform: translateY(-1px);
+    background: linear-gradient(to right, #EB5E28, #EB5E28);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
   

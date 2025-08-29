@@ -27,22 +27,27 @@ const statsData = [
 
 export default function StatsCards() {
   return (
-   <>
-   {statsData.map((item) => (
-        <div key={item.id}>
-          <Paper sx={{borderRadius: "8px"}} className={`stat-card ${item.className}`}>
-            <div className="stat-content">
-              <Typography variant="h4" className="stat-number">
-                {item.number}
-              </Typography>
-              <Typography variant="body1" className="stat-label">
-                {item.label}
-              </Typography>
-            </div>
-            <Icon icon={item.icon} className="stat-bg-icon" />
-          </Paper>
-        </div>
-      ))}
-   </>
+    <>
+      <div className="row">
+        {statsData.map((item) => (
+          <div className="col-12 col-lg-4" key={item.id}>
+            <Paper
+              sx={{ borderRadius: "8px" }}
+              className={`stat-card ${item.className}`}
+            >
+              <div className="stat-content">
+                <Typography variant="h4" className="stat-number">
+                  {item.number}
+                </Typography>
+                <Typography variant="body1" className="stat-label">
+                  {item.label}
+                </Typography>
+              </div>
+              <Icon icon={item.icon} className="stat-bg-icon" />
+            </Paper>
+          </div>
+        ))}
+      </div>
+    </>
   );
 }
