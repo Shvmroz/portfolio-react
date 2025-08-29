@@ -147,7 +147,7 @@ const Dashboard = () => {
 
   return (
     <Box sx={{ width: "100vw", maxWidth: "100%" }}>
-      {/* <Box
+      <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
@@ -158,7 +158,7 @@ const Dashboard = () => {
         <Typography variant="h4" sx={{ fontWeight: 600 }}>
           Dashboard
         </Typography>
-      </Box> */}
+      </Box>
 
       {/* VSCode Editor */}
       <div className="row ">
